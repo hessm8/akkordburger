@@ -18,11 +18,18 @@ public class KeyboardTest : MonoBehaviour {
     [Range(1, 9)]
     public int octave = 4;
 
-    private List<InputAction> onNote;
-    private InputAction offNote;
-
     private InputActionAsset actionAsset;
-    private InputActionMap playKeyboard;
+
+    private InputActionMap keyPlay;
+    private InputActionMap keyMod;
+
+    private Dictionary <
+        string, 
+        Dictionary <
+            string,
+            Action<InputAction.CallbackContext>
+            >
+        > storedActions;
 
     #region Unity
     void Awake() {
@@ -30,11 +37,11 @@ public class KeyboardTest : MonoBehaviour {
         CreateActions();
     }
     private void OnEnable() {
-        playKeyboard.Enable();
+        actionAsset.Enable();
         SubscribeActions();
     }
     private void OnDisable() {
-        playKeyboard.Disable();
+        actionAsset.Disable();
     }
 
     #endregion
@@ -42,40 +49,59 @@ public class KeyboardTest : MonoBehaviour {
     #region Keyboard Setup
     void SetupActionAssets() {
         actionAsset = ScriptableObject.CreateInstance<InputActionAsset>();
-        playKeyboard = new InputActionMap("playKeyboard");
-        actionAsset.AddActionMap(playKeyboard);
+
+        actionAsset.AddActionMap(keyPlay = new InputActionMap("keyPlay"));
+        actionAsset.AddActionMap(keyMod = new InputActionMap("keyMod"));
+
+        storedActions = new Dictionary<string, Dictionary<string, Action<InputAction.CallbackContext>>>();
+        storedActions.Add("keyPlay", new Dictionary <string, Action<InputAction.CallbackContext>>());
+        storedActions.Add("keyMod", new Dictionary<string, Action<InputAction.CallbackContext>>());
     }
+
+    void StoreAction(ref InputActionMap map, string name, Action<InputAction.CallbackContext> action,
+        string bind = null, string interactions = null) {
+        map.AddAction(name, binding: bind, interactions: interactions);
+        storedActions[map.name].Add(name, action);
+    }
+
     void CreateActions() {
+        //var actionMap = actionAsset.FindActionMap("keyPlay");
         foreach (var key in keys) {
-            playKeyboard.AddAction("onNote_" + key.Key)
-                .AddBinding("<Keyboard>/" + key.Key)
-                .WithInteraction("press(behavior=0)");
-            playKeyboard.AddAction("offNote_" + key.Key)
-                .AddBinding("<Keyboard>/" + key.Key)
-                .WithInteraction("press(behavior=1)");
+            StoreAction(ref keyPlay,
+                "onNote_" + key.Key,
+                _ => {
+                    NotePlaying = new MPTKEvent() {
+                        Command = MPTKCommand.NoteOn,
+                        Value = 48,
+                        Channel = 0,
+                        Duration = -1,
+                        Velocity = 100,
+                        Delay = 0,
+                    };
+                    midiStreamPlayer.MPTK_PlayEvent(NotePlaying);
+
+                    Debug.Log("onNote_" + key.Key + " played");
+                },
+                "<Keyboard>/" + key.Key,
+                "press(behavior=0)"
+            );
+
+            StoreAction(ref keyPlay,
+                "offNote_" + key.Key,
+                _ => NoteControl(key.Value, false),
+                "<Keyboard>/" + key.Key,
+                "press(behavior=1)"
+            );
         }
 
-        playKeyboard.AddAction("upOctave").AddBinding("<Keyboard>/equals");
-        playKeyboard.AddAction("downOctave").AddBinding("<Keyboard>/minus");
-
+        StoreAction(ref keyMod, "upOctave", _ => octave++, "<Keyboard>/equals");
+        StoreAction(ref keyMod, "downOctave", _ => octave--, "<Keyboard>/minus");
     }
+
     void SubscribeActions() {
-        foreach (var action in playKeyboard.actions) {
-            var name = action.name;
-            switch (name) {
-                case "upOctave": {
-                    action.performed += _ => octave++;
-                    break;
-                }
-                case "downOctave": {
-                    action.performed += _ => octave--;
-                    break;
-                }
-                default: {
-                    var keyLetter = name[name.Length - 1].ToString();
-                    action.performed += _ => NoteControl(keys[keyLetter], action.name.Contains("onNote"));
-                    break;
-                }
+        foreach (var map in storedActions) {            
+            foreach (var action in actionAsset.FindActionMap(map.Key).actions) {
+                action.performed += context => map.Value[action.name](context);
             }
         }
     }
