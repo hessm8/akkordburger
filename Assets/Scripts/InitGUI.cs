@@ -19,7 +19,7 @@ public class InitGUI : MonoBehaviour {
     private int keyIndexInOctave(int keyIndex) => keyIndex % quantity;
 
     void CreateKeyboardUI() {
-        DrawOctaves(2);
+        DrawOctaves(3);
     }
 
     List<UnityAction> drawLater;
@@ -44,6 +44,7 @@ public class InitGUI : MonoBehaviour {
 
         UnityAction drawKey = () => {
             keyObject = Instantiate(key, keyPos, Quaternion.identity);
+            keyObject.name = $"PianoKey_{k - 12}";
 
             SetSpecific(ref keyObject, isBlack);
 
@@ -69,13 +70,9 @@ public class InitGUI : MonoBehaviour {
             keyMainColor = Color.black;
         }
 
-        //var col = keyObject.colors;
-        //col.normalColor = Color.black;
-        //keyObject.colors = col;
-
-        var keyPressedColor = new Color(196, 75, 58, 255);
+        var keyPressedColor = new Color(0.196f, 0.75f, 0.58f);
         var colors = new ColorBlock() {
-            pressedColor = Color.red,//Color.Lerp(keyMainColor, keyPressedColor, 0.3f),
+            pressedColor = Color.Lerp(keyMainColor, keyPressedColor, 0.45f),
             normalColor = keyMainColor,
             highlightedColor = keyMainColor,
             selectedColor = keyMainColor,

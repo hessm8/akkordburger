@@ -7,6 +7,8 @@ using UnityEngine.InputSystem.Utilities;
 
 using MidiPlayerTK;
 using System;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class KeyboardTest : MonoBehaviour {
     public MidiStreamPlayer midiStreamPlayer;
@@ -69,26 +71,14 @@ public class KeyboardTest : MonoBehaviour {
         foreach (var key in keys) {
             StoreAction(ref keyPlay,
                 "onNote_" + key.Key,
-                _ => {
-                    NotePlaying = new MPTKEvent() {
-                        Command = MPTKCommand.NoteOn,
-                        Value = 48 + key.Value,
-                        Channel = 0,
-                        Duration = -1,
-                        Velocity = 100,
-                        Delay = 0,
-                    };
-                    midiStreamPlayer.MPTK_PlayEvent(NotePlaying);
-
-                    Debug.Log("onNote_" + key.Key + " played");
-                },
+                ctx => OnNote(ctx, key.Value, key.Key),
                 "<Keyboard>/" + key.Key,
                 "press(behavior=0)"
             );
 
             StoreAction(ref keyPlay,
                 "offNote_" + key.Key,
-                _ => NoteControl(key.Value, false),
+                ctx => OffNote(ctx, key.Value, key.Key),
                 "<Keyboard>/" + key.Key,
                 "press(behavior=1)"
             );
@@ -109,6 +99,52 @@ public class KeyboardTest : MonoBehaviour {
     #endregion
 
     #region Note Functions
+
+    void OnNote(InputAction.CallbackContext context, int key, string computerKey = null) {
+        var keyObj = GameObject.Find($"PianoKey_{key}");
+        var pianoKey = keyObj.GetComponent<PianoKey>();
+        var guiKey = keyObj.GetComponent<Button>();
+        var d = new PointerEventData(EventSystem.current);
+        
+        guiKey.OnPointerDown(d);
+        pianoKey.OnPointerDown(d);
+
+
+
+        //NotePlaying = new MPTKEvent() {
+        //    Command = MPTKCommand.NoteOn,
+        //    Value = 48 + key,
+        //    Channel = 0,
+        //    Duration = -1,
+        //    Velocity = 100,
+        //    Delay = 0,
+        //};
+        //midiStreamPlayer.MPTK_PlayEvent(NotePlaying);
+
+        Debug.Log("onNote_" + computerKey + " played");
+    }
+
+    void OffNote(InputAction.CallbackContext context, int key, string computerKey = null) {
+        var keyObj = GameObject.Find($"PianoKey_{key}");
+        var pianoKey = keyObj.GetComponent<PianoKey>();
+        var guiKey = keyObj.GetComponent<Button>();
+        var d = new PointerEventData(EventSystem.current);
+
+        guiKey.OnPointerUp(d);
+        pianoKey.OnPointerUp(d);
+
+        //NotePlaying = new MPTKEvent() {
+        //    Command = MPTKCommand.NoteOn,
+        //    Value = 48 + key,
+        //    Channel = 0,
+        //    Duration = -1,
+        //    Velocity = 100,
+        //    Delay = 0,
+        //};
+        //midiStreamPlayer.MPTK_PlayEvent(NotePlaying);
+
+        Debug.Log("offNote_" + computerKey + " played");
+    }
 
     Dictionary<string, int> keys = new Dictionary<string, int>() {
         { "Q", 0 },
