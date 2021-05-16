@@ -5,17 +5,16 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public abstract class EffectControl<BaseEffect> : IEffectControl
-    where BaseEffect : Behaviour {
+public abstract class EffectControl<BaseEffect> where BaseEffect : Behaviour {
     public abstract string EffectName { get; }
-    protected Component Component { get; }
+    protected AudioManager Manager { get; }
     protected BaseEffect Effect { get; }
     protected Toggle Toggle { get; private set; }
-    private readonly Dictionary<string, Slider> sliders = new Dictionary<string, Slider>();    
+    protected readonly Dictionary<string, Slider> sliders = new Dictionary<string, Slider>();    
 
-    public EffectControl(Component component) {
-        Component = component;
-        Effect = component.GetComponent<BaseEffect>();        
+    public EffectControl(AudioManager manager) {
+        Manager = manager;
+        Effect = manager.GetComponent<BaseEffect>();        
         LocateParameters();
         AddEvents();
     }
@@ -42,11 +41,18 @@ public abstract class EffectControl<BaseEffect> : IEffectControl
         }
     }
 
-    public void OnToggle(bool value) => Effect.enabled = value;
+    public virtual void OnToggle(bool isOn) => Effect.enabled = isOn;
 
     public abstract void AddEvents();
-    protected void Slider(string sliderName, UnityAction<float> setter) {
-        sliders[sliderName].onValueChanged.AddListener(setter);
-    }
-    
+    protected void Slider(string sliderName, (float min, float max) range, UnityAction<float> setter) {
+        var slider = sliders[sliderName];
+        
+        slider.minValue = range.min;
+        slider.maxValue = range.max;
+
+             
+        slider.onValueChanged.AddListener(setter);
+
+        slider.value = (range.min + range.max) / 2;   
+    }    
 }
