@@ -20,6 +20,6 @@ public class PianoKey : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     }
 
     void Start() {
-        midiSuite = GameObject.Find("MidiStreamPlayer").GetComponent<KeyboardActions>();
+        midiSuite = GameObject.Find("MidiPlayer").GetComponent<KeyboardActions>();
     }
 }
