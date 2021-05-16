@@ -12,7 +12,7 @@ public class AudioEffectManager : MonoBehaviour {
 
     public void AddEffects(params IEffectControl[] effects) {
         foreach (var effect in effects) {
-            controls.Add(effect.Name, effect);
+            controls.Add(effect.EffectName, effect);
         }        
     }
 
@@ -22,12 +22,5 @@ public class AudioEffectManager : MonoBehaviour {
             //new DelayControl(this),
             //new ChorusControl(this)
         );
-
-        //effects.Add("reverb", GetComponent<AudioReverbFilter>());
-        //effects.Add("delay", GetComponent<AudioEchoFilter>());
-        //effects.Add("chorus", GetComponent<AudioChorusFilter>());
     }
-
-
-    //public void Toggle(string name) => controls[name].Toggle();
 }

@@ -7,5 +7,8 @@ using UnityEngine.UI;
 
 public class ReverbControl : EffectControl<AudioReverbFilter> {
     public ReverbControl(Component component) : base(component) { }
-    public override string Name => "reverb";
+    public override string EffectName => "Reverb";
+    public override void AddEvents() {
+        Slider("Decay", value => Effect.decayTime = value);     
+    }
 }

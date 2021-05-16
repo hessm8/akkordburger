@@ -7,71 +7,46 @@ using UnityEngine.UI;
 
 public abstract class EffectControl<BaseEffect> : IEffectControl
     where BaseEffect : Behaviour {
-
+    public abstract string EffectName { get; }
     protected Component Component { get; }
     protected BaseEffect Effect { get; }
-
-    protected Dictionary<string, Behaviour> parameters = new Dictionary<string, Behaviour>() {
-        ["toggle"] = null,
-        ["wet"] = null
-    };
-
-    protected Toggle toggle;
-    protected Slider wetSlider;
-
-    public abstract string Name { get; }
-
-    [Range(0, 1)]
-    public float mix;
+    protected Toggle Toggle { get; private set; }
+    private readonly Dictionary<string, Slider> sliders = new Dictionary<string, Slider>();    
 
     public EffectControl(Component component) {
         Component = component;
-        Effect = component.GetComponent<BaseEffect>();
-
-        
-        AssignUI(FindGroupUI());
+        Effect = component.GetComponent<BaseEffect>();        
+        LocateParameters();
+        AddEvents();
     }
 
-    private IEnumerable<GameObject> FindGroupUI() {
-        var parent = GameObject.Find(Name).transform;
-
-        //for (int childIndex = 0; childIndex < parent.childCount; childIndex++) {
-        //}
+    private void LocateParameters() {
+        var parent = GameObject.Find(EffectName).transform;
 
         foreach (Transform childTransform in parent) {
             var child = childTransform.gameObject;
-            yield return child;
-        }
-    }
-
-    private void AssignUI(IEnumerable<GameObject> children) {
-        foreach (var child in children) {
             var name = child.name;
 
-            //if (!parameters.ContainsKey(name)) continue;
+            var label = childTransform.GetChild(0);
+            var textComponent = label.GetComponent<Text>();
+            textComponent.text = name;
 
-            switch (name) {
-                case "toggle": {
-                    toggle = child.GetComponent<Toggle>();
-                    //parameters[name] = child.GetComponent<Toggle>();
-                    break;
-                }
-                case "wet": {
-                    wetSlider = child.GetComponent<Slider>();
-
-                    //parameters[name] = child.GetComponent<Slider>();
-                    break;
-                }
+            if (name == "Toggle") {
+                Toggle = child.GetComponent<Toggle>();
+                Toggle.onValueChanged.AddListener(OnToggle);
+                textComponent.text = EffectName;
+            } else {
+                sliders.Add(name, child.GetComponent<Slider>());
+                textComponent.text = name;
             }
         }
-
-        //((Toggle)parameters["toggle"]).onValueChanged += 
-
-        toggle.onValueChanged.AddListener(Toggle);
-        //wetSlider.onValueChanged.AddListener();
     }
 
-    public void Toggle(bool value) => Effect.enabled = value;
+    public void OnToggle(bool value) => Effect.enabled = value;
 
-    //public void Wet(float value) => Effect.;
+    public abstract void AddEvents();
+    protected void Slider(string sliderName, UnityAction<float> setter) {
+        sliders[sliderName].onValueChanged.AddListener(setter);
+    }
+    
 }

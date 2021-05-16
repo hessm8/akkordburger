@@ -6,5 +6,5 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 public interface IEffectControl {
-    public abstract string Name { get; }
+    public abstract string EffectName { get; }
 }
