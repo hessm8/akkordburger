@@ -10,7 +10,7 @@ using System;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class KeyboardTest : MonoBehaviour {
+public class KeyboardActions : MonoBehaviour {
     public MidiStreamPlayer midiStreamPlayer;
     private MPTKEvent NotePlaying;
 

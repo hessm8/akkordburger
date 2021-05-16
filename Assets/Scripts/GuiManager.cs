@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class InitGUI : MonoBehaviour {
+public class GuiManager : MonoBehaviour {
     public Button key;
-    public KeyboardTest midiSuite;
+    public KeyboardActions midiSuite;
 
     Vector2 keySize = new Vector2(30, 150);
     int quantity = 12;
@@ -17,7 +17,6 @@ public class InitGUI : MonoBehaviour {
     List<int> blackers = new List<int> { 1, 3, 6, 8, 10 };
 
     private int keyIndexInOctave(int keyIndex) => keyIndex % quantity;
-
     void CreateKeyboardUI() {
         DrawOctaves(3);
     }
@@ -30,7 +29,6 @@ public class InitGUI : MonoBehaviour {
         }
         foreach (var drawKey in drawLater) drawKey();
     }
-
     void DrawKeyAt(int k, ref int addOffsetCount) {
         bool isBlack = blackers.Contains(keyIndexInOctave(k));
 
@@ -57,7 +55,6 @@ public class InitGUI : MonoBehaviour {
         if (isBlack) drawLater.Add(drawKey);
         else drawKey();
     }
-
     void SetSpecific(ref Button keyObject, bool isBlack) {
         var keyMainColor = Color.white;
 
@@ -82,7 +79,6 @@ public class InitGUI : MonoBehaviour {
         };
         keyObject.colors = colors;
     }
-
 
     void CreateKeyboardUIOld() {
         int addOffsetCount = 0;
@@ -115,7 +111,6 @@ public class InitGUI : MonoBehaviour {
 
         toDo.ForEach(a => a.Invoke());
     }
-
     void CreateKeyboardUIFirst() {
         for (int keyIndex = 0; keyIndex < quantity * octaves; keyIndex++) {
             var keyPos = new Vector3(keyIndex * keySize.x - keyOffset, 0);

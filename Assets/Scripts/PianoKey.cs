@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class PianoKey : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
 {
-    private KeyboardTest midiSuite;
+    private KeyboardActions midiSuite;
     public int keyIndex;
 
     //OnPointerDown is also required to receive OnPointerUp callbacks
@@ -20,6 +20,6 @@ public class PianoKey : MonoBehaviour, IPointerUpHandler, IPointerDownHandler
     }
 
     void Start() {
-        midiSuite = GameObject.Find("MidiStreamPlayer").GetComponent<KeyboardTest>();
+        midiSuite = GameObject.Find("MidiStreamPlayer").GetComponent<KeyboardActions>();
     }
 }
