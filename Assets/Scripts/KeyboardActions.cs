@@ -75,8 +75,8 @@ public class KeyboardActions : MonoBehaviour {
             );
         }
 
-        StoreAction(ref keyMod, "upOctave", _ => audioManager.Octave++, "<Keyboard>/equals");
-        StoreAction(ref keyMod, "downOctave", _ => audioManager.Octave--, "<Keyboard>/minus");
+        StoreAction(ref keyMod, "upOctave", _ => audioManager.ChangeOctave(1), "<Keyboard>/equals");
+        StoreAction(ref keyMod, "downOctave", _ => audioManager.ChangeOctave(-1), "<Keyboard>/minus");
     }
 
     void SubscribeActions() {

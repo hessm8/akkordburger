@@ -47,7 +47,7 @@ public class GuiManager : MonoBehaviour {
             SetSpecific(ref keyObject, isBlack);
 
             keyObject.transform.SetParent(transform, false);
-            keyObject.GetComponent<PianoKey>().keyIndex = k;
+            keyObject.GetComponent<PianoKey>().Index = k;
         };
 
         //drawKey();
@@ -102,7 +102,7 @@ public class GuiManager : MonoBehaviour {
                 //if (isBlack) SetBlack(ref keyObject);
 
                 keyObject.transform.SetParent(transform, false);
-                keyObject.GetComponent<PianoKey>().keyIndex = keyIndex;
+                keyObject.GetComponent<PianoKey>().Index = keyIndex;
             };
 
             if (isBlack) toDo.Add(drawKey);
@@ -117,7 +117,7 @@ public class GuiManager : MonoBehaviour {
             var keyObject = Instantiate(key, keyPos, Quaternion.identity);
 
             keyObject.transform.SetParent(transform, false);
-            keyObject.GetComponent<PianoKey>().keyIndex = keyIndex;
+            keyObject.GetComponent<PianoKey>().Index = keyIndex;
         }
 
         for (int keyIndex = 0; keyIndex < quantity * octaves; keyIndex++) {
@@ -138,7 +138,7 @@ public class GuiManager : MonoBehaviour {
             keyObject.colors = col;
 
             keyObject.transform.SetParent(transform, false);
-            keyObject.GetComponent<PianoKey>().keyIndex = keyIndex;
+            keyObject.GetComponent<PianoKey>().Index = keyIndex;
         }
     }
 
