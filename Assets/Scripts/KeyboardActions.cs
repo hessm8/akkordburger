@@ -11,27 +11,14 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class KeyboardActions : MonoBehaviour {
-    public MidiStreamPlayer midiStreamPlayer;
-    private MPTKEvent NotePlaying;
-
-    public int BPM;
-
-    private double BeatInMilliseconds => 60000 / BPM * 0.001;
-    [Range(1, 9)]
-    public int octave = 4;
+    private AudioManager audioManager;    
 
     private InputActionAsset actionAsset;
 
     private InputActionMap keyPlay;
     private InputActionMap keyMod;
 
-    private Dictionary<
-        string,
-        Dictionary<
-            string,
-            Action<InputAction.CallbackContext>
-            >
-        > storedActions;
+    private Dictionary<string, Dictionary< string, Action<InputAction.CallbackContext> >> storedActions;
 
     #region Unity
     void Awake() {
@@ -45,6 +32,10 @@ public class KeyboardActions : MonoBehaviour {
     }
     private void OnDisable() {
         actionAsset.Disable();
+    }
+
+    private void Start() {
+        audioManager = GetComponent<AudioManager>();
     }
 
     #endregion
@@ -71,21 +62,21 @@ public class KeyboardActions : MonoBehaviour {
         foreach (var key in keys) {
             StoreAction(ref keyPlay,
                 "onNote_" + key.Key,
-                ctx => OnNote(ctx, key.Value, key.Key),
+                ctx => audioManager.OnNote(ctx, key.Value, key.Key),
                 "<Keyboard>/" + key.Key,
                 "press(behavior=0)"
             );
 
             StoreAction(ref keyPlay,
                 "offNote_" + key.Key,
-                ctx => OffNote(ctx, key.Value, key.Key),
+                ctx => audioManager.OffNote(ctx, key.Value, key.Key),
                 "<Keyboard>/" + key.Key,
                 "press(behavior=1)"
             );
         }
 
-        StoreAction(ref keyMod, "upOctave", _ => octave++, "<Keyboard>/equals");
-        StoreAction(ref keyMod, "downOctave", _ => octave--, "<Keyboard>/minus");
+        StoreAction(ref keyMod, "upOctave", _ => audioManager.Octave++, "<Keyboard>/equals");
+        StoreAction(ref keyMod, "downOctave", _ => audioManager.Octave--, "<Keyboard>/minus");
     }
 
     void SubscribeActions() {
@@ -94,56 +85,6 @@ public class KeyboardActions : MonoBehaviour {
                 action.performed += context => map.Value[action.name](context);
             }
         }
-    }
-
-    #endregion
-
-    #region Note Functions
-
-    void OnNote(InputAction.CallbackContext context, int key, string computerKey = null) {
-        var keyObj = GameObject.Find($"PianoKey_{key}");
-        var pianoKey = keyObj.GetComponent<PianoKey>();
-        var guiKey = keyObj.GetComponent<Button>();
-        var d = new PointerEventData(EventSystem.current);
-        
-        guiKey.OnPointerDown(d);
-        pianoKey.OnPointerDown(d);
-
-
-
-        //NotePlaying = new MPTKEvent() {
-        //    Command = MPTKCommand.NoteOn,
-        //    Value = 48 + key,
-        //    Channel = 0,
-        //    Duration = -1,
-        //    Velocity = 100,
-        //    Delay = 0,
-        //};
-        //midiStreamPlayer.MPTK_PlayEvent(NotePlaying);
-
-        Debug.Log("onNote_" + computerKey + " played");
-    }
-
-    void OffNote(InputAction.CallbackContext context, int key, string computerKey = null) {
-        var keyObj = GameObject.Find($"PianoKey_{key}");
-        var pianoKey = keyObj.GetComponent<PianoKey>();
-        var guiKey = keyObj.GetComponent<Button>();
-        var d = new PointerEventData(EventSystem.current);
-
-        guiKey.OnPointerUp(d);
-        pianoKey.OnPointerUp(d);
-
-        //NotePlaying = new MPTKEvent() {
-        //    Command = MPTKCommand.NoteOn,
-        //    Value = 48 + key,
-        //    Channel = 0,
-        //    Duration = -1,
-        //    Velocity = 100,
-        //    Delay = 0,
-        //};
-        //midiStreamPlayer.MPTK_PlayEvent(NotePlaying);
-
-        Debug.Log("offNote_" + computerKey + " played");
     }
 
     Dictionary<string, int> keys = new Dictionary<string, int>() {
@@ -177,32 +118,6 @@ public class KeyboardActions : MonoBehaviour {
         { "J", -2 },
         { "M", -1 },
     };
-
-    private void SendNoteEvent(int note = 48, bool isPlaying = true) {
-        var playState = isPlaying ? MPTKCommand.NoteOn : MPTKCommand.NoteOff;
-
-        NotePlaying = new MPTKEvent() {
-            Command = playState, // midi command
-            Value = note, // from 0 to 127, 48 for C4, 60 for C5, ...
-            Channel = 0, // from 0 to 15, 9 reserved for drum
-            Duration = -1, // note duration in millisecond, -1 to play undefinitely, MPTK_StopChord to stop
-            Velocity = 100, // from 0 to 127, sound can vary depending on the velocity
-            Delay = 0, // delay in millisecond before playing the note
-        };
-        midiStreamPlayer.MPTK_PlayEvent(NotePlaying);
-    }
-
-    public void NoteControl(int keyIndex, bool state) {
-        SendNoteEvent(12 * octave + keyIndex, state);
-    }
-
-    //    timer += Time.fixedDeltaTime;
-
-    //if (timer > BeatInMilliseconds + offset) {
-    //if (noteind != melody.Length-1) SendNoteEvent(12 * 5 + melody[noteind++]);
-    //    noteind %= melody.Length;
-    //timer -= (float) BeatInMilliseconds;
-    //}
 
     #endregion
 }
