@@ -8,8 +8,8 @@ using UnityEngine.UI;
 public abstract class UIControl {
     public abstract string ControlGroup { get; }
     protected AudioManager Manager { get; }
-    protected Dictionary<string, Toggle> Toggles { get; }
-    protected Dictionary<string, Slider> Sliders { get; }
+    public Dictionary<string, Toggle> Toggles { get; }
+    public Dictionary<string, Slider> Sliders { get; }
     protected virtual void Locate(GameObject child) { }
     protected virtual void Initialize() { }
     protected abstract void AddEvents();

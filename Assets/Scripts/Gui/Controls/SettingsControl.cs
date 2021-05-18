@@ -28,5 +28,7 @@ public class SettingsControl : UIControl {
     }
     protected override void AddEvents() {
         instrument.onValueChanged.AddListener(ChangeDropdown);
+        Slider("Volume", (0, 100), value => Manager.NoteVolume = (int)value);
+        Slider("Octave", (2, 8), value => Manager.Octave = (int)value);
     }
 }

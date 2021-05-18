@@ -21,13 +21,13 @@ public class AudioManager : MonoBehaviour {
 
     public bool allowPlay = true;    
     public Instrument currentInstrument = new Instrument();
-
+    private SettingsControl settings;
     private void AddControls() {
         new ReverbControl(this);
         new DelayControl(this);
         new ChorusControl(this);
 
-        new SettingsControl(this);
+        settings = new SettingsControl(this);
     }
 
     public void Awake() {
@@ -79,9 +79,13 @@ public class AudioManager : MonoBehaviour {
             var button = note.GetComponent<Button>();
             button.OnPointerUp(PointerData);
         }
+        settings.Sliders["Octave"].value += direction;
 
         Octave += direction;
     }
+
+
+    public int NoteVolume = 100;
 
     public void OnPianoKey(PianoKey key, bool state) {
 
@@ -92,13 +96,14 @@ public class AudioManager : MonoBehaviour {
             Value = Note(key.Index),
             Channel = currentInstrument.Channel, // from 0 to 15, 9 reserved for drum
             Duration = -1, // note duration in millisecond, -1 to play undefinitely, MPTK_StopChord to stop
-            Velocity = 75, // from 0 to 127, sound can vary depending on the velocity
+            Velocity = NoteVolume, // from 0 to 127, sound can vary depending on the velocity
             Delay = 0, // delay in millisecond before playing the note
         };
 
         if (state) SustainedNotes.Add(key);
         else SustainedNotes.Remove(key);
         currentInstrument.Use();
+
         Player.PlayAudioEvent(NotePlaying);
     }
 
