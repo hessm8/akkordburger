@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// A list of string with index: midi, preset, bank, drum, ...

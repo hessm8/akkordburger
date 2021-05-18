@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// Used in TestMidiFilePlayerMulti demo. Useful to draw gizmos to debug camera path (no interest directly for MPTK)

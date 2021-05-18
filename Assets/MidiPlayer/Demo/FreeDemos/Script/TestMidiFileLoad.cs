@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MidiPlayerTK;
+using MidiToolkit;
 using System;
 using UnityEngine.Events;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     public class TestMidiFileLoad : MonoBehaviour
     {
@@ -116,11 +116,11 @@ namespace MidiPlayerTK
                 if (GUILayout.Button(new GUIContent("Read Events", ""), GUILayout.Height(40)))
                 {
                     infoEvents = new List<string>();
-                    List<MPTKEvent> events = MidiLoader.MPTK_ReadMidiEvents(StartTicks, EndTicks);
-                    foreach (MPTKEvent evt in events)
+                    List<AudioEvent> events = MidiLoader.MPTK_ReadMidiEvents(StartTicks, EndTicks);
+                    foreach (AudioEvent evt in events)
                     {
                         infoEvents.Add(evt.ToString());
-                        if (evt.Command == MPTKCommand.MetaEvent && evt.Meta == MPTKMeta.TimeSignature)
+                        if (evt.Command == MidiCommand.MetaEvent && evt.Meta == MPTKMeta.TimeSignature)
                         {
                             Debug.Log($"{MidiLoader.MPTK_TimeSigNumerator} {MidiLoader.MPTK_TimeSigDenominator} {MidiLoader.MPTK_NumberBeatsMeasure} {MidiLoader.MPTK_NumberQuarterBeat} {MidiLoader.MPTK_TicksInMetronomeClick} {MidiLoader.MPTK_No32ndNotesInQuarterNote}");
                         }

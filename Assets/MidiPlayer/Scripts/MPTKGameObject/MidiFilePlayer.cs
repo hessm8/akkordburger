@@ -7,7 +7,7 @@ using System;
 using UnityEngine.Events;
 using MEC;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// Script associated to the prefab MidiFilePlayer. 
@@ -804,11 +804,11 @@ namespace MidiPlayerTK
         /// </summary>
         /// <param name="note"></param>
         /// <returns>MPTKEvent.EnumLength</returns>
-        public MPTKEvent.EnumLength MPTK_NoteLength(MPTKEvent note)
+        public AudioEvent.EnumLength MPTK_NoteLength(AudioEvent note)
         {
             if (miditoplay != null)
                 return miditoplay.NoteLength(note);
-            return MPTKEvent.EnumLength.Sixteenth;
+            return AudioEvent.EnumLength.Sixteenth;
         }
 
         /// <summary>
@@ -1013,7 +1013,7 @@ namespace MidiPlayerTK
                     //Debug.Log("---------------- " /*+ timeFromStartPlay */+ "   deltaTime:" + Math.Round(deltaTime, 3) /*+ "   " + System.DateTime.UtcNow.Millisecond*/);
 
                     // Read midi events until this time
-                    List<MPTKEvent> midievents = miditoplay.fluid_player_callback((int)timeMidiFromStartPlay);
+                    List<AudioEvent> midievents = miditoplay.fluid_player_callback((int)timeMidiFromStartPlay);
 
                     if (miditoplay.EndMidiEvent || replayMidi || stopMidi || (toPosition > 0 && toPosition > fromPosition && MPTK_Position > toPosition))
                     {
@@ -1038,7 +1038,7 @@ namespace MidiPlayerTK
                         //Debug.Log("---------------- play count:" + midievents.Count);
                         if (MPTK_DirectSendToPlayer)
                         {
-                            foreach (MPTKEvent midievent in midievents)
+                            foreach (AudioEvent midievent in midievents)
                             {
                                 MPTK_PlayDirectEvent(midievent, false);
                             }
@@ -1270,7 +1270,7 @@ namespace MidiPlayerTK
                         {
                             while (QueueMidiEvents != null && QueueMidiEvents.Count > 0)
                             {
-                                List<MPTKEvent> midievents = QueueMidiEvents.Dequeue();
+                                List<AudioEvent> midievents = QueueMidiEvents.Dequeue();
                                 if (midievents != null && midievents.Count > 0)
                                 {
                                     if (SpatialSynths != null)
@@ -1282,8 +1282,8 @@ namespace MidiPlayerTK
                                         else
                                         {
                                             // Send to the channel synth
-                                            List<MPTKEvent> channelEvent = new List<MPTKEvent>();
-                                            foreach (MPTKEvent midievent in midievents)
+                                            List<AudioEvent> channelEvent = new List<AudioEvent>();
+                                            foreach (AudioEvent midievent in midievents)
                                             {
                                                 if (SpatialSynths[midievent.Channel].OnEventNotesMidi != null)
                                                 {

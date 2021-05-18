@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 using UnityEngine;
 using MEC;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     public class VoiceAudioSource : MonoBehaviour
     {

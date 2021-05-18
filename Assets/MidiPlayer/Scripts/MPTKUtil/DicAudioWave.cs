@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// Dictionnary of wave associated with AudioClip

@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using UnityEngine.Events;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
 
     [System.Serializable]
-    public class EventMidiClass : UnityEvent<MPTKEvent>
+    public class EventMidiClass : UnityEvent<AudioEvent>
     {
     }
 
     [System.Serializable]
-    public class EventNotesMidiClass : UnityEvent<List<MPTKEvent>>
+    public class EventNotesMidiClass : UnityEvent<List<AudioEvent>>
     {
     }
 

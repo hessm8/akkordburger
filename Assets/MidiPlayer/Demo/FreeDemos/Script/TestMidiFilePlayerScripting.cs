@@ -2,11 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MidiPlayerTK;
+using MidiToolkit;
 using System;
 using UnityEngine.Events;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     public class TestMidiFilePlayerScripting : MonoBehaviour
     {
@@ -188,7 +188,7 @@ namespace MidiPlayerTK
         /// <summary>
         /// Event fired by MidiFilePlayer when a midi notes are available (set by Unity Editor in MidiFilePlayer Inspector)
         /// </summary>
-        public void MidiReadEvents(List<MPTKEvent> events)
+        public void MidiReadEvents(List<AudioEvent> events)
         {
             if (StopPositionPct < 100f)
             {
@@ -201,14 +201,14 @@ namespace MidiPlayerTK
                         midiFilePlayer.MPTK_Next();
             }
 
-            foreach (MPTKEvent midievent in events)
+            foreach (AudioEvent midievent in events)
             {
                 switch (midievent.Command)
                 {
-                    case MPTKCommand.NoteOn:
+                    case MidiCommand.NoteOn:
                         //Debug.LogFormat("Note:{0} Velocity:{1} Duration:{2}", midievent.Value, midievent.Velocity, midievent.Duration);
                         break;
-                    case MPTKCommand.MetaEvent:
+                    case MidiCommand.MetaEvent:
                         switch (midievent.Meta)
                         {
                             case MPTKMeta.TextEvent:

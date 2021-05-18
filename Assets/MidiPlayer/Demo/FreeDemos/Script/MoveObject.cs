@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     public class MoveObject : MonoBehaviour
     {

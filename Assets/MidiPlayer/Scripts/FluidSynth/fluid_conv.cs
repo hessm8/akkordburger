@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml.Serialization;
 using UnityEngine;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
 
     public class fluid_conv

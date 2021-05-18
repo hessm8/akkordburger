@@ -7,7 +7,7 @@ using System;
 using UnityEngine.Events;
 using MEC;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// Script associated to the prefab MidiFileLoader. 
@@ -287,7 +287,7 @@ namespace MidiPlayerTK
         /// <param name="fromTicks">ticks start</param>
         /// <param name="toTicks">ticks end</param>
         /// <returns></returns>
-        public List<MPTKEvent> MPTK_ReadMidiEvents(long fromTicks = 0, long toTicks = long.MaxValue)
+        public List<AudioEvent> MPTK_ReadMidiEvents(long fromTicks = 0, long toTicks = long.MaxValue)
         {
             if (miditoload == null)
             {
@@ -369,13 +369,13 @@ namespace MidiPlayerTK
         /// </summary>
         /// <param name="note"></param>
         /// <returns>MPTKEvent.EnumLength</returns>
-        public MPTKEvent.EnumLength MPTK_NoteLength(MPTKEvent note)
+        public AudioEvent.EnumLength MPTK_NoteLength(AudioEvent note)
         {
             if (miditoload != null)
                 return miditoload.NoteLength(note);
             else
                 NoMidiLoaded("MPTK_NoteLength");
-            return MPTKEvent.EnumLength.Sixteenth;
+            return AudioEvent.EnumLength.Sixteenth;
         }
     }
 }

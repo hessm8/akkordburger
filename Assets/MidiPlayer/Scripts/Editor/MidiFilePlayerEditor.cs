@@ -8,7 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// Inspector for the midi global player component

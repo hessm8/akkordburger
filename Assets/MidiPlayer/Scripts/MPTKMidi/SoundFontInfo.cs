@@ -1,4 +1,4 @@
-﻿using MidiPlayerTK;
+﻿using MidiToolkit;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Xml.Serialization;
 using UnityEngine;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// Define parameter and information for the SF to avoid loading all a SF 

@@ -8,7 +8,7 @@ using MPTK.NAudio.Midi;
 using System;
 using System.IO;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// Scan a midifile and return information

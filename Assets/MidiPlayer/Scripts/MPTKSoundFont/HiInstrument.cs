@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml.Serialization;
 
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// Instrument from a fluid_inst_t

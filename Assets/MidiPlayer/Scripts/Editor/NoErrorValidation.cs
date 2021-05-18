@@ -1,5 +1,5 @@
 ﻿//#define MPTK_PRO
-using MidiPlayerTK;
+using MidiToolkit;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;

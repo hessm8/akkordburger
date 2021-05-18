@@ -3,10 +3,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MidiPlayerTK;
+using MidiToolkit;
 using System;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     public class TestMidiStream : MonoBehaviour
     {
@@ -84,7 +84,7 @@ namespace MidiPlayerTK
         /// <summary>
         /// Current note playing
         /// </summary>
-        private MPTKEvent NotePlaying;
+        private AudioEvent NotePlaying;
 
         private float LastTimeChange;
 
@@ -200,11 +200,11 @@ namespace MidiPlayerTK
             Debug.LogFormat($"Synth {name} is loaded");
 
             // Set piano (preset 0) to channel 0. Could be different for another SoundFont.
-            midiStreamPlayer.MPTK_ChannelPresetChange(0, 0);
+            midiStreamPlayer.ChangePreset(0, 0);
             Debug.LogFormat($"Preset {midiStreamPlayer.MPTK_ChannelPresetGetName(0)} defined on channel 0");
 
             // Set reed organ (preset 20) to channel 1. Could be different for another SoundFont.
-            midiStreamPlayer.MPTK_ChannelPresetChange(1, 20);
+            midiStreamPlayer.ChangePreset(1, 20);
             Debug.LogFormat($"Preset {midiStreamPlayer.MPTK_ChannelPresetGetName(1)} defined on channel 1");
         }
 
@@ -215,28 +215,28 @@ namespace MidiPlayerTK
             {
                 case "BANK_INST":
                     MidiPlayerGlobal.MPTK_SelectBankInstrument(index);
-                    midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent() { Command = MPTKCommand.ControlChange, Controller = MPTKController.BankSelect, Value = index, Channel = StreamChannel, });
+                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.BankSelect, Value = index, Channel = StreamChannel, });
                     break;
 
                 case "PATCH_INST":
                     CurrentPreset = index;
                     if (testLocalchange)
-                        midiStreamPlayer.MPTK_ChannelPresetChange(StreamChannel, index);
+                        midiStreamPlayer.ChangePreset(StreamChannel, index);
                     else
-                        midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent() { Command = MPTKCommand.PatchChange, Value = index, Channel = StreamChannel, });
+                        midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.PatchChange, Value = index, Channel = StreamChannel, });
                     break;
 
                 case "BANK_DRUM":
                     MidiPlayerGlobal.MPTK_SelectBankDrum(index);
-                    midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent() { Command = MPTKCommand.ControlChange, Controller = MPTKController.BankSelect, Value = index, Channel = 9, });
+                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.BankSelect, Value = index, Channel = 9, });
                     break;
 
                 case "PATCH_DRUM":
                     CurrentPatchDrum = index;
                     if (testLocalchange)
-                        midiStreamPlayer.MPTK_ChannelPresetChange(9, index);
+                        midiStreamPlayer.ChangePreset(9, index);
                     else
-                        midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent() { Command = MPTKCommand.PatchChange, Value = index, Channel = 9 });
+                        midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.PatchChange, Value = index, Channel = 9 });
                     break;
             }
         }
@@ -395,9 +395,9 @@ namespace MidiPlayerTK
                 if (preset != CurrentPreset)
                 {
                     CurrentPreset = preset;
-                    midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent()
+                    midiStreamPlayer.PlayAudioEvent(new AudioEvent()
                     {
-                        Command = MPTKCommand.PatchChange,
+                        Command = MidiCommand.PatchChange,
                         Value = CurrentPreset,
                         Channel = StreamChannel,
                     });
@@ -513,7 +513,7 @@ namespace MidiPlayerTK
                 {
                     LastTimePitchChange = Time.realtimeSinceStartup;
                     PitchChange = pitchChange;
-                    midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent() { Command = MPTKCommand.PitchWheelChange, Value = (int)PitchChange << 7, Channel = StreamChannel });
+                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.PitchWheelChange, Value = (int)PitchChange << 7, Channel = StreamChannel });
                 }
                 midiStreamPlayer.MPTK_Transpose = (int)Slider("Transpose", midiStreamPlayer.MPTK_Transpose, -24, 24, true);
 
@@ -530,7 +530,7 @@ namespace MidiPlayerTK
                 if (panChange != PanChange)
                 {
                     PanChange = panChange;
-                    midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent() { Command = MPTKCommand.ControlChange, Controller = MPTKController.Pan, Value = PanChange, Channel = StreamChannel });
+                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.Pan, Value = PanChange, Channel = StreamChannel });
                 }
                 GUILayout.EndHorizontal();
 
@@ -543,7 +543,7 @@ namespace MidiPlayerTK
                 if (modChange != ModChange)
                 {
                     ModChange = modChange;
-                    midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent() { Command = MPTKCommand.ControlChange, Controller = MPTKController.Modulation, Value = ModChange, Channel = StreamChannel });
+                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.Modulation, Value = ModChange, Channel = StreamChannel });
                 }
 
                 // Change modulation. Often applied volume, this effect is defined in the SoundFont 
@@ -551,7 +551,7 @@ namespace MidiPlayerTK
                 if (expChange != ExpChange)
                 {
                     ExpChange = expChange;
-                    midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent() { Command = MPTKCommand.ControlChange, Controller = MPTKController.Expression, Value = ExpChange, Channel = StreamChannel });
+                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.Expression, Value = ExpChange, Channel = StreamChannel });
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.EndVertical(); // end ControlChange modification
@@ -788,7 +788,7 @@ namespace MidiPlayerTK
                         PitchChange = DEFAULT_PITCH;
                     //PitchChange = Mathf.Lerp(PitchChange, DEFAULT_PITCH, Time.deltaTime*10f);
                     //Debug.Log("DEFAULT_PITCH " + DEFAULT_PITCH + " " + PitchChange + " " + currentVelocityPitch);
-                    midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent() { Command = MPTKCommand.PitchWheelChange, Value = (int)PitchChange << 7, Channel = StreamChannel });
+                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.PitchWheelChange, Value = (int)PitchChange << 7, Channel = StreamChannel });
                 }
             }
 
@@ -808,9 +808,9 @@ namespace MidiPlayerTK
                             if (++CurrentPreset > EndPreset) CurrentPreset = StartPreset;
                             if (CurrentPreset < StartPreset) CurrentPreset = StartPreset;
 
-                            midiStreamPlayer.MPTK_PlayEvent(new MPTKEvent()
+                            midiStreamPlayer.PlayAudioEvent(new AudioEvent()
                             {
-                                Command = MPTKCommand.PatchChange,
+                                Command = MidiCommand.PatchChange,
                                 Value = CurrentPreset,
                                 Channel = StreamChannel,
                             });
@@ -966,9 +966,9 @@ namespace MidiPlayerTK
         {
             //Debug.Log($"{StreamChannel} {midiStreamPlayer.MPTK_ChannelPresetGetName(StreamChannel)}");
             // Start playing a new note
-            NotePlaying = new MPTKEvent()
+            NotePlaying = new AudioEvent()
             {
-                Command = MPTKCommand.NoteOn,
+                Command = MidiCommand.NoteOn,
                 Value = CurrentNote,
                 Channel = StreamChannel,
                 Duration = Convert.ToInt64(NoteDuration * 1000f), // millisecond, -1 to play undefinitely
@@ -982,7 +982,7 @@ namespace MidiPlayerTK
                 if (indexGenerator[i] >= 0)
                     NotePlaying.MTPK_ModifySynthParameter((fluid_gen_type)indexGenerator[i], valueGenerator[i] / 100f, MPTKModeGeneratorChange.Override);
 #endif
-            midiStreamPlayer.MPTK_PlayEvent(NotePlaying);
+            midiStreamPlayer.PlayAudioEvent(NotePlaying);
         }
         //! [Example MPTK_PlayEvent]
 

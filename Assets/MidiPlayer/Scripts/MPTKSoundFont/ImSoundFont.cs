@@ -1,4 +1,4 @@
-﻿using MidiPlayerTK;
+﻿using MidiToolkit;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// SoundFont adapted to Unity

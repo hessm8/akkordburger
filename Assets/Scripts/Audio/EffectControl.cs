@@ -19,14 +19,35 @@ public abstract class EffectControl<BaseEffect> where BaseEffect : Behaviour {
         AddEvents();
     }
 
-    private void LocateParameters() {
-        var parent = GameObject.Find(EffectName).transform;
+    
 
-        foreach (Transform childTransform in parent) {
-            var child = childTransform.gameObject;
+    //private void LocateParameters() {
+    //    var parent = GameObject.Find(EffectName).transform;
+
+    //    foreach (Transform childTransform in parent) {
+    //        var child = childTransform.gameObject;
+    //        var name = child.name;
+
+    //        var label = childTransform.GetChild(0);
+    //        var textComponent = label.GetComponent<Text>();
+    //        textComponent.text = name;
+
+    //        if (name == "Toggle") {
+    //            Toggle = child.GetComponent<Toggle>();
+    //            Toggle.onValueChanged.AddListener(OnToggle);
+    //            textComponent.text = EffectName;
+    //        } else {
+    //            sliders.Add(name, child.GetComponent<Slider>());
+    //            textComponent.text = name;
+    //        }
+    //    }
+    //}
+
+    private void LocateParameters() {
+        Utils.ForeachChildOf(EffectName, child => {
             var name = child.name;
 
-            var label = childTransform.GetChild(0);
+            var label = child.transform.GetChild(0);
             var textComponent = label.GetComponent<Text>();
             textComponent.text = name;
 
@@ -38,7 +59,7 @@ public abstract class EffectControl<BaseEffect> where BaseEffect : Behaviour {
                 sliders.Add(name, child.GetComponent<Slider>());
                 textComponent.text = name;
             }
-        }
+        });
     }
 
     public virtual void OnToggle(bool isOn) => Effect.enabled = isOn;

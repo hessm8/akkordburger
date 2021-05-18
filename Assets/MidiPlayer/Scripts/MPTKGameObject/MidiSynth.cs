@@ -24,7 +24,7 @@ using System.Threading;
 using Oboe.Stream;
 #endif
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     public enum fluid_loop
     {
@@ -627,14 +627,14 @@ namespace MidiPlayerTK
         private List<fluid_voice> FreeVoices;              /** the synthesis processes */
         //public ConcurrentQueue<MPTKEvent> QueueEvents;
         protected Queue<SynthCommand> QueueSynthCommand;
-        protected Queue<List<MPTKEvent>> QueueMidiEvents;
+        protected Queue<List<AudioEvent>> QueueMidiEvents;
 
         public class SynthCommand
         {
             public enum enCmd { StartEvent, StopEvent, ClearAllVoices, NoteOffAll }
             public enCmd Command;
             public int IdSession; // V2.84
-            public MPTKEvent MidiEvent;
+            public AudioEvent MidiEvent;
         }
 
         /* fluid_settings_old_t settings_old;  the old synthesizer settings */
@@ -1058,7 +1058,7 @@ namespace MidiPlayerTK
 
             FreeVoices = new List<fluid_voice>();
             QueueSynthCommand = new Queue<SynthCommand>();
-            QueueMidiEvents = new Queue<List<MPTKEvent>>();
+            QueueMidiEvents = new Queue<List<AudioEvent>>();
 
             fluid_conv.fluid_conversion_config();
 
@@ -1769,7 +1769,7 @@ namespace MidiPlayerTK
         /// <param name="preset">The count of presets is dependant of the soundfont selected</param>
         /// <param name="newbank">optionnal, use the default bank defined globally</param>
         /// <returns>true if preset change is done</returns>
-        public bool MPTK_ChannelPresetChange(int channel, int preset, int newbank = -1)
+        public bool ChangePreset(int channel, int preset, int newbank = -1)
         {
             if (CheckParamChannel(channel))
             {
@@ -2079,7 +2079,7 @@ namespace MidiPlayerTK
             return null;
         }
 
-        public void synth_noteon(MPTKEvent note)
+        public void synth_noteon(AudioEvent note)
         {
             if (note.Tag != null && note.Tag.GetType() == typeof(long))
                 StatUILatencyLAST = (float)(DateTime.UtcNow.Ticks - (long)note.Tag) / (float)fluid_voice.Nano100ToMilli;
@@ -2554,14 +2554,14 @@ namespace MidiPlayerTK
         /// </summary>
         /// <param name="midievents">List of Midi events to play</param>
         /// <param name="playNoteOff"></param>
-        protected void PlayEvents(List<MPTKEvent> midievents, bool playNoteOff = true)
+        protected void PlayEvents(List<AudioEvent> midievents, bool playNoteOff = true)
         {
             if (MidiPlayerGlobal.MPTK_SoundFontLoaded == false)
                 return;
 
             if (midievents != null)
             {
-                foreach (MPTKEvent note in midievents)
+                foreach (AudioEvent note in midievents)
                 {
                     MPTK_PlayDirectEvent(note, playNoteOff);
                 }
@@ -2577,7 +2577,7 @@ namespace MidiPlayerTK
         /// @snippet MusicView.cs Example PlayNote
         /// </summary>
         /// <param name="midievent"></param>
-        protected void StopEvent(MPTKEvent midievent)
+        protected void StopEvent(AudioEvent midievent)
         {
             try
             {
@@ -2603,7 +2603,7 @@ namespace MidiPlayerTK
         /// @snippet MusicView.cs Example MPTK_PlayEvent
         /// </summary>
         /// <param name="midievent"></param>
-        public void MPTK_PlayDirectEvent(MPTKEvent midievent, bool playNoteOff = true)
+        public void MPTK_PlayDirectEvent(AudioEvent midievent, bool playNoteOff = true)
         {
             //Debug.Log($">>> PlayEvent IdSynth:'{this.IdSynth}'");
 
@@ -2621,7 +2621,7 @@ namespace MidiPlayerTK
                 //Debug.Log(midievent.ToString());
                 switch (midievent.Command)
                 {
-                    case MPTKCommand.NoteOn:
+                    case MidiCommand.NoteOn:
                         if (midievent.Velocity != 0)
                         {
 #if DEBUGNOTE
@@ -2638,23 +2638,23 @@ namespace MidiPlayerTK
                         }
                         break;
 
-                    case MPTKCommand.NoteOff:
+                    case MidiCommand.NoteOff:
                         if (playNoteOff)
                             fluid_synth_noteoff(midievent.Channel, midievent.Value);
                         break;
 
-                    case MPTKCommand.ControlChange:
+                    case MidiCommand.ControlChange:
                         //if (midievent.Controller == MPTKController.Modulation) Debug.Log("midievent.Controller Modulation " + midievent.Value);
                         if (MPTK_ApplyRealTimeModulator)
                             Channels[midievent.Channel].fluid_channel_cc(midievent.Controller, midievent.Value); // replace of fluid_synth_cc(note.Channel, note.Controller, (int)note.Value);
                         break;
 
-                    case MPTKCommand.PatchChange:
+                    case MidiCommand.PatchChange:
                         if (midievent.Channel != 9 || MPTK_EnablePresetDrum == true)
                             fluid_synth_program_change(midievent.Channel, midievent.Value);
                         break;
 
-                    case MPTKCommand.PitchWheelChange:
+                    case MidiCommand.PitchWheelChange:
                         fluid_synth_pitch_bend(midievent.Channel, midievent.Value);
                         break;
                 }
@@ -3069,7 +3069,7 @@ namespace MidiPlayerTK
             //EllapseMidi = watchMidi.ElapsedTicks / ((float)System.Diagnostics.Stopwatch.Frequency / 1000f);
             EllapseMidi = watchMidi.ElapsedMilliseconds;
             // Read midi events until this time
-            List<MPTKEvent> midievents = miditoplay.fluid_player_callback((int)EllapseMidi);
+            List<AudioEvent> midievents = miditoplay.fluid_player_callback((int)EllapseMidi);
 
 #if DEBUG_PERF_MIDI
             StatReadMidiMS = (float)watchPerfMidi.ElapsedTicks / ((float)System.Diagnostics.Stopwatch.Frequency / 1000f);
@@ -3080,7 +3080,7 @@ namespace MidiPlayerTK
             // Play notes read from the midi file
             if (midievents != null && midievents.Count > 0)
             {
-                foreach (MPTKEvent midiEvent in midievents)
+                foreach (AudioEvent midiEvent in midievents)
                     midiEvent.IdSession = IdSession;
 
                 lock (this) // V2.83
@@ -3096,7 +3096,7 @@ namespace MidiPlayerTK
 
                 if (MPTK_DirectSendToPlayer)
                 {
-                    foreach (MPTKEvent midievent in midievents)
+                    foreach (AudioEvent midievent in midievents)
                     {
                         try
                         {

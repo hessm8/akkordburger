@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
 //    public enum fluid_log_level
 //    {

@@ -9,7 +9,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// Class for loading a Midi file. 
@@ -324,9 +324,9 @@ namespace MidiPlayerTK
         /// <param name="fromTicks">ticks start</param>
         /// <param name="toTicks">ticks end</param>
         /// <returns></returns>
-        public List<MPTKEvent> MPTK_ReadMidiEvents(long fromTicks = 0, long toTicks = long.MaxValue)
+        public List<AudioEvent> MPTK_ReadMidiEvents(long fromTicks = 0, long toTicks = long.MaxValue)
         {
-            List<MPTKEvent> midievents = new List<MPTKEvent>();
+            List<AudioEvent> midievents = new List<AudioEvent>();
             try
             {
                 if (midifile != null)
@@ -680,9 +680,9 @@ namespace MidiPlayerTK
         }
 
         // see previous version for comment and debug
-        public List<MPTKEvent> fluid_player_callback(int msec)
+        public List<AudioEvent> fluid_player_callback(int msec)
         {
-            List<MPTKEvent> midievents = null;
+            List<AudioEvent> midievents = null;
             try
             {
                 if (midifile != null && next_event >= 0)
@@ -719,7 +719,7 @@ namespace MidiPlayerTK
                         }
                         else
                         {
-                            if (midievents == null) midievents = new List<MPTKEvent>();
+                            if (midievents == null) midievents = new List<AudioEvent>();
                             ConvertToEvent(midievents, trackEvent);
                             MPTK_TickCurrent = trackEvent.Event.AbsoluteTime;
                         }
@@ -750,9 +750,9 @@ namespace MidiPlayerTK
         /// <param name="mptkEvents">Must be alloc before the call</param>
         /// <param name="trackEvent"></param>
         /// <returns></returns>
-        private void ConvertToEvent(List<MPTKEvent> mptkEvents, TrackMidiEvent trackEvent)
+        private void ConvertToEvent(List<AudioEvent> mptkEvents, TrackMidiEvent trackEvent)
         {
-            MPTKEvent midievent = null;
+            AudioEvent midievent = null;
             switch (trackEvent.Event.CommandCode)
             {
                 case MidiCommandCode.NoteOn:
@@ -763,11 +763,11 @@ namespace MidiPlayerTK
                         //Debug.Log(string.Format("Track:{0} NoteNumber:{1,3:000} AbsoluteTime:{2,6:000000} NoteLength:{3,6:000000} OffDeltaTime:{4,6:000000} ", track, noteon.NoteNumber, noteon.AbsoluteTime, noteon.NoteLength, noteon.OffEvent.DeltaTime));
                         if (noteon.OffEvent != null)
                         {
-                            midievent = new MPTKEvent()
+                            midievent = new AudioEvent()
                             {
                                 Track = trackEvent.IndexTrack,
                                 Tick = trackEvent.AbsoluteQuantize,
-                                Command = MPTKCommand.NoteOn,
+                                Command = MidiCommand.NoteOn,
                                 Value = noteon.NoteNumber,
                                 Channel = trackEvent.Event.Channel - 1,
                                 Velocity = noteon.Velocity,
@@ -787,11 +787,11 @@ namespace MidiPlayerTK
                         {
                             if (KeepNoteOff)
                             {
-                                midievent = new MPTKEvent()
+                                midievent = new AudioEvent()
                                 {
                                     Track = trackEvent.IndexTrack,
                                     Tick = trackEvent.AbsoluteQuantize,
-                                    Command = MPTKCommand.NoteOff,
+                                    Command = MidiCommand.NoteOff,
                                     Value = noteon.NoteNumber,
                                     Channel = trackEvent.Event.Channel - 1,
                                     Velocity = noteon.Velocity,
@@ -816,11 +816,11 @@ namespace MidiPlayerTK
                     {
                         NoteEvent noteoff = (NoteEvent)trackEvent.Event;
                         //Debug.Log(string.Format("Track:{0} NoteNumber:{1,3:000} AbsoluteTime:{2,6:000000} NoteLength:{3,6:000000} OffDeltaTime:{4,6:000000} ", track, noteon.NoteNumber, noteon.AbsoluteTime, noteon.NoteLength, noteon.OffEvent.DeltaTime));
-                        midievent = new MPTKEvent()
+                        midievent = new AudioEvent()
                         {
                             Track = trackEvent.IndexTrack,
                             Tick = trackEvent.AbsoluteQuantize,
-                            Command = MPTKCommand.NoteOff,
+                            Command = MidiCommand.NoteOff,
                             Value = noteoff.NoteNumber,
                             Channel = trackEvent.Event.Channel - 1,
                             Velocity = noteoff.Velocity,
@@ -841,11 +841,11 @@ namespace MidiPlayerTK
 
                 case MidiCommandCode.PitchWheelChange:
                     PitchWheelChangeEvent pitch = (PitchWheelChangeEvent)trackEvent.Event;
-                    midievent = new MPTKEvent()
+                    midievent = new AudioEvent()
                     {
                         Track = trackEvent.IndexTrack,
                         Tick = trackEvent.AbsoluteQuantize,
-                        Command = MPTKCommand.PitchWheelChange,
+                        Command = MidiCommand.PitchWheelChange,
                         Channel = trackEvent.Event.Channel - 1,
                         Value = pitch.Pitch,  // Pitch Wheel Value 0 is minimum, 0x2000 (8192) is default, 0x3FFF (16383) is maximum
                     };
@@ -856,11 +856,11 @@ namespace MidiPlayerTK
 
                 case MidiCommandCode.ControlChange:
                     ControlChangeEvent controlchange = (ControlChangeEvent)trackEvent.Event;
-                    midievent = new MPTKEvent()
+                    midievent = new AudioEvent()
                     {
                         Track = trackEvent.IndexTrack,
                         Tick = trackEvent.AbsoluteQuantize,
-                        Command = MPTKCommand.ControlChange,
+                        Command = MidiCommand.ControlChange,
                         Channel = trackEvent.Event.Channel - 1,
                         Controller = (MPTKController)controlchange.Controller,
                         Value = controlchange.ControllerValue,
@@ -878,11 +878,11 @@ namespace MidiPlayerTK
 
                 case MidiCommandCode.PatchChange:
                     PatchChangeEvent change = (PatchChangeEvent)trackEvent.Event;
-                    midievent = new MPTKEvent()
+                    midievent = new AudioEvent()
                     {
                         Track = trackEvent.IndexTrack,
                         Tick = trackEvent.AbsoluteQuantize,
-                        Command = MPTKCommand.PatchChange,
+                        Command = MidiCommand.PatchChange,
                         Channel = trackEvent.Event.Channel - 1,
                         Value = change.Patch,
                     };
@@ -893,11 +893,11 @@ namespace MidiPlayerTK
 
                 case MidiCommandCode.MetaEvent:
                     MetaEvent meta = (MetaEvent)trackEvent.Event;
-                    midievent = new MPTKEvent()
+                    midievent = new AudioEvent()
                     {
                         Track = trackEvent.IndexTrack,
                         Tick = trackEvent.AbsoluteQuantize,
-                        Command = MPTKCommand.MetaEvent,
+                        Command = MidiCommand.MetaEvent,
                         Channel = trackEvent.Event.Channel - 1,
                         Meta = (MPTKMeta)meta.MetaEventType,
                     };
@@ -989,20 +989,20 @@ namespace MidiPlayerTK
         /// </summary>
         /// <param name="note"></param>
         /// <returns></returns>
-        public MPTKEvent.EnumLength NoteLength(MPTKEvent note)
+        public AudioEvent.EnumLength NoteLength(AudioEvent note)
         {
             if (midifile != null)
             {
                 if (note.Length >= midifile.DeltaTicksPerQuarterNote * 4)
-                    return MPTKEvent.EnumLength.Whole;
+                    return AudioEvent.EnumLength.Whole;
                 else if (note.Length >= midifile.DeltaTicksPerQuarterNote * 2)
-                    return MPTKEvent.EnumLength.Half;
+                    return AudioEvent.EnumLength.Half;
                 else if (note.Length >= midifile.DeltaTicksPerQuarterNote)
-                    return MPTKEvent.EnumLength.Quarter;
+                    return AudioEvent.EnumLength.Quarter;
                 else if (note.Length >= midifile.DeltaTicksPerQuarterNote / 2)
-                    return MPTKEvent.EnumLength.Eighth;
+                    return AudioEvent.EnumLength.Eighth;
             }
-            return MPTKEvent.EnumLength.Sixteenth;
+            return AudioEvent.EnumLength.Sixteenth;
         }
 
         private void AnalyzeTimeSignature(MetaEvent meta, TrackMidiEvent trackEvent = null)

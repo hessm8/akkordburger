@@ -7,7 +7,7 @@ using System;
 using System.Collections.ObjectModel;
 using MEC;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// Singleton class to manage all global features of MPTK.

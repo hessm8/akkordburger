@@ -90,7 +90,7 @@
  */
 using UnityEngine;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /*-----------------------------------------------------------------------------
      Sinusoidal modulator

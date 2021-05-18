@@ -1,4 +1,4 @@
-﻿using MidiPlayerTK;
+﻿using MidiToolkit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +15,7 @@ namespace MPTKDemoCatchMusic
     public class NoteView : MonoBehaviour
     {
         public static bool FirstNotePlayed = false;
-        public MPTKEvent note;
+        public AudioEvent note;
         public MidiStreamPlayer midiStreamPlayer;
         public bool played = false;
         public Material MatPlayed;
@@ -40,7 +40,7 @@ namespace MPTKDemoCatchMusic
                 //! [Example PlayNote]
                 note.Value += delta; // change the original note
                 // Now play the note with a MidiStreamPlayer prefab
-                midiStreamPlayer.MPTK_PlayEvent(note);
+                midiStreamPlayer.PlayAudioEvent(note);
                 //! [Example PlayNote]
                 FirstNotePlayed = true;
 

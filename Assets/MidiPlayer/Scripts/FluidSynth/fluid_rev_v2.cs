@@ -182,7 +182,7 @@
 using System;
 using UnityEngine;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     public class fluid_revmodel
     {

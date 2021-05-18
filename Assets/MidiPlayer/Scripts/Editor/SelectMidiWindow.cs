@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using MPTK.NAudio.Midi;
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     //using MonoProjectOptim;
     using UnityEditor;

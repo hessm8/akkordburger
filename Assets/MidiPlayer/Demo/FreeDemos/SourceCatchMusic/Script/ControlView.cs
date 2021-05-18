@@ -1,4 +1,4 @@
-﻿using MidiPlayerTK;
+﻿using MidiToolkit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +8,7 @@ namespace MPTKDemoCatchMusic
 
     public class ControlView : MonoBehaviour
     {
-        public MPTKEvent note;
+        public AudioEvent note;
         public MidiStreamPlayer midiStreamPlayer;
         public bool played = false;
         public Material MatPlayed;
@@ -24,7 +24,7 @@ namespace MPTKDemoCatchMusic
                 int delta = (int)(zOriginal - transform.position.z);
                 note.Value += delta;
                 // Now play the control change with a MidiStreamPlayer prefab
-                midiStreamPlayer.MPTK_PlayEvent(note);
+                midiStreamPlayer.PlayAudioEvent(note);
 
                 gameObject.GetComponent<Renderer>().material = MatPlayed;
             }

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-using MidiPlayerTK;
+using MidiToolkit;
 using System;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;

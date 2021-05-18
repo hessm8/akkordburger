@@ -7,7 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     public class PopupListPatchs : PopupWindowContent
     {

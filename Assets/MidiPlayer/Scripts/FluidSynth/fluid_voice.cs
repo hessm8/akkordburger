@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 using UnityEngine;
 using MEC;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
 
     /* for fluid_voice_add_mod */
@@ -51,7 +51,7 @@ namespace MidiPlayerTK
         long ticks;
 
         public MidiSynth synth;
-        public MPTKEvent MptkEvent;
+        public AudioEvent MptkEvent;
         public int IndexActive;
         public long LatenceTick;
 
@@ -555,7 +555,7 @@ namespace MidiPlayerTK
         }
 
 
-        public void fluid_voice_start(MPTKEvent note)
+        public void fluid_voice_start(AudioEvent note)
         {
             // The maximum volume of the loop is calculated and cached once for each sample with its nominal loop settings. 
             // This happens, when the sample is used for the first time.

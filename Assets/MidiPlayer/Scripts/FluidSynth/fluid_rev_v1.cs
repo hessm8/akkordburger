@@ -39,7 +39,7 @@ using UnityEngine;
  * denormal level. Jon suggests to run it once per block instead of
  * every sample.
  */
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
 
     public class fluid_revmodelV1

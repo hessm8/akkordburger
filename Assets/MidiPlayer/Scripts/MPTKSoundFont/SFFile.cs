@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     public class SFFile
     {

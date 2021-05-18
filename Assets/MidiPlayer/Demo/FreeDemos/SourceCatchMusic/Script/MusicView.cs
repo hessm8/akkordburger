@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MidiPlayerTK;
+using MidiToolkit;
 using System;
 using UnityEngine.Events;
 namespace MPTKDemoCatchMusic
@@ -70,17 +70,17 @@ namespace MPTKDemoCatchMusic
         /// Playing the events are delayed until they "fall out"
         /// </summary>
         /// <param name="notes"></param>
-        public void NotesToPlay(List<MPTKEvent> notes)
+        public void NotesToPlay(List<AudioEvent> notes)
         {
             // Count gameobject for each z position in the plan. Useful to stack them.
             countZ = new int[Convert.ToInt32(maxZ - minZ) + 1];
 
             //Debug.Log(midiFilePlayer.MPTK_PlayTime.ToString() + " count:" + notes.Count);
-            foreach (MPTKEvent mptkEvent in notes)
+            foreach (AudioEvent mptkEvent in notes)
             {
                 switch (mptkEvent.Command)
                 {
-                    case MPTKCommand.NoteOn:
+                    case MidiCommand.NoteOn:
                         //Debug.Log($"NoteOn Channel:{note.Channel}  Preset index:{midiStreamPlayer.MPTK_ChannelPresetGetIndex(note.Channel)}  Preset name:{midiStreamPlayer.MPTK_ChannelPresetGetName(note.Channel)}");
                         if (mptkEvent.Value > 40 && mptkEvent.Value < 100)// && note.Channel==1)
                         {
@@ -104,7 +104,7 @@ namespace MPTKDemoCatchMusic
                         }
                         break;
 
-                    case MPTKCommand.PatchChange:
+                    case MidiCommand.PatchChange:
                         {
                             //Debug.Log($"PatchChange Channel:{note.Channel}  Preset index:{note.Value}");
                             // Z position is set depending the note value:mptkEvent.Value
@@ -130,9 +130,9 @@ namespace MPTKDemoCatchMusic
         {
             // Some sound for waiting the notes, will be disbled at the fist note played ...
             //! [Example PlayNote]
-            midiStreamPlayer.MPTK_PlayEvent
+            midiStreamPlayer.PlayAudioEvent
             (
-                new MPTKEvent()
+                new AudioEvent()
                 {
                     Channel = 9,
                     Duration = 999999,

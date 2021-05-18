@@ -5,13 +5,13 @@ using System.Text;
 using System.Xml.Serialization;
 using UnityEngine;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// MIDI command codes. Defined the action to be done with the message: note on/off, change instrument, ...
     /// Depending of the command selected, others properties must be set; Value, Channel, ....
     /// </summary>
-    public enum MPTKCommand : byte
+    public enum MidiCommand : byte
     {
         /// <summary>Note Off</summary>
         NoteOff = 0x80,
@@ -154,7 +154,7 @@ namespace MidiPlayerTK
     ///! midiStreamPlayer.MPTK_PlayEvent(NotePlaying);    
     ///! @endcode
     /// </summary>
-    public partial class MPTKEvent : ICloneable
+    public partial class AudioEvent : ICloneable
     {
         public virtual object Clone()
         {
@@ -179,7 +179,7 @@ namespace MidiPlayerTK
         /// <summary>
         /// Midi Command code. Defined the type of message (Note On, Control Change, Patch Change...)
         /// </summary>
-        public MPTKCommand Command;
+        public MidiCommand Command;
 
         /// <summary>
         /// Controller code. When the Command is ControlChange, contains the code fo the controller to change (Modulation, Pan, Bank Select ...). Value will contains the value of the controller.
@@ -274,9 +274,9 @@ namespace MidiPlayerTK
             }
         }
 
-        public MPTKEvent()
+        public AudioEvent()
         {
-            Command = MPTKCommand.NoteOn;
+            Command = MidiCommand.NoteOn;
             // V2.82 set default value
             Duration = -1;
             Channel = 0;
@@ -300,50 +300,50 @@ namespace MidiPlayerTK
         /// Create a MPTK Midi event from a midi input message
         /// </summary>
         /// <param name="data"></param>
-        public MPTKEvent(ulong data)
+        public AudioEvent(ulong data)
         {
             Source = (uint)(data & 0xffffffffUL);
-            Command = (MPTKCommand)((data >> 32) & 0xFF);
-            if (Command < MPTKCommand.Sysex)
+            Command = (MidiCommand)((data >> 32) & 0xFF);
+            if (Command < MidiCommand.Sysex)
             {
                 Channel = (int)Command & 0xF;
-                Command = (MPTKCommand)((int)Command & 0xF0);
+                Command = (MidiCommand)((int)Command & 0xF0);
             }
             byte data1 = (byte)((data >> 40) & 0xff);
             byte data2 = (byte)((data >> 48) & 0xff);
 
-            if (Command == MPTKCommand.NoteOn && data2 == 0)
-                Command = MPTKCommand.NoteOff;
+            if (Command == MidiCommand.NoteOn && data2 == 0)
+                Command = MidiCommand.NoteOff;
 
             //if ((int)Command != 0xFE)
             //    Debug.Log($"{data >> 32:X}");
 
             switch (Command)
             {
-                case MPTKCommand.NoteOn:
+                case MidiCommand.NoteOn:
                     Value = data1; // Key
                     Velocity = data2;
                     Duration = -1; // no duration are defined in Midi flux
                     break;
-                case MPTKCommand.NoteOff:
+                case MidiCommand.NoteOff:
                     Value = data1; // Key
                     Velocity = data2;
                     break;
-                case MPTKCommand.KeyAfterTouch:
+                case MidiCommand.KeyAfterTouch:
                     Value = data1; // Key
                     Velocity = data2;
                     break;
-                case MPTKCommand.ControlChange:
+                case MidiCommand.ControlChange:
                     Controller = (MPTKController)data1;
                     Value = data2;
                     break;
-                case MPTKCommand.PatchChange:
+                case MidiCommand.PatchChange:
                     Value = data1;
                     break;
-                case MPTKCommand.ChannelAfterTouch:
+                case MidiCommand.ChannelAfterTouch:
                     Value = data1;
                     break;
-                case MPTKCommand.PitchWheelChange:
+                case MidiCommand.PitchWheelChange:
                     Value = data2 << 7 | data1; // Pitch-bend is transmitted with 14-bit precision. 
                     break;
             }
@@ -358,25 +358,25 @@ namespace MidiPlayerTK
             ulong data = (ulong)Command | ((ulong)Channel & 0xF);
             switch (Command)
             {
-                case MPTKCommand.NoteOn:
+                case MidiCommand.NoteOn:
                     data |= (ulong)Value << 8 | (ulong)Velocity << 16;
                     break;
-                case MPTKCommand.NoteOff:
+                case MidiCommand.NoteOff:
                     data |= (ulong)Value << 8 | (ulong)Velocity << 16;
                     break;
-                case MPTKCommand.KeyAfterTouch:
+                case MidiCommand.KeyAfterTouch:
                     data |= (ulong)Value << 8 | (ulong)Velocity << 16;
                     break;
-                case MPTKCommand.ControlChange:
+                case MidiCommand.ControlChange:
                     data |= (ulong)Controller << 8 | (ulong)Value << 16;
                     break;
-                case MPTKCommand.PatchChange:
+                case MidiCommand.PatchChange:
                     data |= (ulong)Value << 8;
                     break;
-                case MPTKCommand.ChannelAfterTouch:
+                case MidiCommand.ChannelAfterTouch:
                     data |= (ulong)Value << 8;
                     break;
-                case MPTKCommand.PitchWheelChange:
+                case MidiCommand.PitchWheelChange:
                     // The pitch bender is measured by a fourteen bit value. Center (no pitch change) is 2000H. 
                     // Two data after the command code 
                     //  1) the least significant 7 bits. 
@@ -396,41 +396,41 @@ namespace MidiPlayerTK
             string result;
             switch (Command)
             {
-                case MPTKCommand.NoteOn:
+                case MidiCommand.NoteOn:
                     string sDuration = Duration == long.MaxValue ? "Inf." : Duration.ToString();
                     result = string.Format("NoteOn\tTrk:{0:00} Ch:{1:00}\tTick:{2}\tNote:{3}\tDuration:{4,-8}\tVelocity:{5}",
                       Track, Channel, Tick, Value, sDuration, Velocity);
                     break;
-                case MPTKCommand.NoteOff:
+                case MidiCommand.NoteOff:
                     sDuration = Duration == long.MaxValue ? "Inf." : Duration.ToString();
                     result = string.Format("NoteOff\tTrk:{0:00} Ch:{1:00}\tTick:{2}\tNote:{3}\tDuration:{4,-8}\tVelocity:{5}",
                       Track, Channel, Tick, Value, sDuration, Velocity);
                     break;
-                case MPTKCommand.PatchChange:
+                case MidiCommand.PatchChange:
                     result = string.Format("Patch\tTrk:{0:00} Ch:{1:00}\tTick:{2}\tPatch:{3}",
                      Track, Channel, Tick, Value);
                     break;
-                case MPTKCommand.ControlChange:
+                case MidiCommand.ControlChange:
                     result = string.Format("Control\tTrk:{0:00} Ch:{1:00}\tTick:{2}\tValue:{3}\tControler:{4}",
                      Track, Channel, Tick, Value, Controller);
                     break;
-                case MPTKCommand.KeyAfterTouch:
+                case MidiCommand.KeyAfterTouch:
                     result = string.Format("KeyAfterTouch\tTrk:{0:00} Ch:{1:00}\tTick:{2}\tKey:{3}\tValue:{4}",
                      Track, Channel, Tick, Value, Controller);
                     break;
-                case MPTKCommand.ChannelAfterTouch:
+                case MidiCommand.ChannelAfterTouch:
                     result = string.Format("ChannelAfterTouch\tTrk:{0:00} Ch:{1:00}\tTick:{2}\tValue:{3}",
                      Track, Channel, Tick, Value);
                     break;
-                case MPTKCommand.PitchWheelChange:
+                case MidiCommand.PitchWheelChange:
                     result = string.Format("Pitch Wheel\tTrk:{0:00} Ch:{1:00}\tTick:{2}\tValue:{3}",
                      Track, Channel, Tick, Value);
                     break;
-                case MPTKCommand.MetaEvent:
+                case MidiCommand.MetaEvent:
                     result = string.Format("Meta\tTrk:{0:00} Ch:{1:00}\tTick:{2}\tValue:{3}",
                       Track, Channel, Tick, Info ?? "Empty info");
                     break;
-                case MPTKCommand.AutoSensing:
+                case MidiCommand.AutoSensing:
                     result = string.Format("Auto Sensing");
                     break;
                 default:

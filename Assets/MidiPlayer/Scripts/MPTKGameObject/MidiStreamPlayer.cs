@@ -9,7 +9,7 @@ using UnityEngine.Events;
 using MEC;
 using UnityEngine.UI;
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// Play generated notes. 
@@ -45,7 +45,7 @@ namespace MidiPlayerTK
         /// Play one midi event with a thread so the call return immediately.
         ///! @snippet MusicView.cs Example PlayNote
         /// </summary>
-        public void MPTK_PlayEvent(MPTKEvent evnt)
+        public void PlayAudioEvent(AudioEvent evnt)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace MidiPlayerTK
         /// Play a list of midi events with a thread so the call return immediately.
         /// @snippet TestMidiStream.cs Example MPTK_PlayEvent
         /// </summary>
-        public void MPTK_PlayEvent(List<MPTKEvent> events)
+        public void MPTK_PlayEvent(List<AudioEvent> events)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace MidiPlayerTK
                     {
                         lock (this) // V2.83
                         {
-                            foreach (MPTKEvent evnt in events)
+                            foreach (AudioEvent evnt in events)
                                 QueueSynthCommand.Enqueue(new SynthCommand() { Command = SynthCommand.enCmd.StartEvent, MidiEvent = evnt });
                         }
                     }
@@ -101,7 +101,7 @@ namespace MidiPlayerTK
             }
         }
 
-        private IEnumerator<float> TheadPlay(MPTKEvent evnt)
+        private IEnumerator<float> TheadPlay(AudioEvent evnt)
         {
             if (evnt != null)
             {
@@ -126,7 +126,7 @@ namespace MidiPlayerTK
             yield return 0;
         }
 
-        private IEnumerator<float> TheadPlay(List<MPTKEvent> events)
+        private IEnumerator<float> TheadPlay(List<AudioEvent> events)
         {
             if (events != null && events.Count > 0)
             {
@@ -157,7 +157,7 @@ namespace MidiPlayerTK
         /// Stop playing the note. All waves associated to the note are stop by sending a noteoff.
         /// </summary>
         /// <param name="pnote"></param>
-        public void MPTK_StopEvent(MPTKEvent pnote)
+        public void MPTK_StopEvent(AudioEvent pnote)
         {
             if (!MPTK_CorePlayer)
                 StopEvent(pnote);

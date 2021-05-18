@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml.Serialization;
 
 
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
     /// <summary>
     /// ImBank of an ImSoundFont

@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace MidiPlayerTK
+namespace MidiToolkit
 {
 
     /// <summary>
