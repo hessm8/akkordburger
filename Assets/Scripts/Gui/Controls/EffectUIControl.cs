@@ -22,7 +22,7 @@ public abstract class EffectUIControl<BaseEffect> : UIControl
         EffectToggle.onValueChanged.AddListener(OnToggle);
 
         GetLabel(EffectToggle.gameObject, out var textComp);
-        textComp.text = ControlName;
+        textComp.text = ControlGroup;
     }
 
     protected virtual void OnToggle(bool isOn) => Effect.enabled = isOn;

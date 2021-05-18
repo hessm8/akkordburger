@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 public abstract class UIControl {
-    public abstract string ControlName { get; }
+    public abstract string ControlGroup { get; }
     protected AudioManager Manager { get; }
     protected Dictionary<string, Toggle> Toggles { get; }
     protected Dictionary<string, Slider> Sliders { get; }
@@ -27,7 +27,7 @@ public abstract class UIControl {
     }    
 
     private void LocateParameters() {
-        Utils.ForeachChildOf(ControlName, child => {
+        Utils.ForeachChildOf(ControlGroup, child => {
             var name = child.name;
 
             GetLabel(child, out var textComponent);

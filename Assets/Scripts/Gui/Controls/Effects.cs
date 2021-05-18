@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ReverbControl : EffectUIControl<AudioReverbFilter> {
     public ReverbControl(AudioManager manager) : base(manager) { }
-    public override string ControlName => "Reverb";
+    public override string ControlGroup => "Reverb";
     protected override void AddEvents() {        
         
         Slider("Mix", (-2500, -500), value => Effect.reverbLevel = value);
@@ -17,7 +17,7 @@ public class ReverbControl : EffectUIControl<AudioReverbFilter> {
 
 public class DelayControl : EffectUIControl<AudioEchoFilter> {
     public DelayControl(AudioManager manager) : base(manager) { }
-    public override string ControlName => "Delay";
+    public override string ControlGroup => "Delay";
     protected override void AddEvents() {
         Slider("Mix", (0, 1), value => {
             Effect.wetMix = value;
@@ -51,7 +51,7 @@ public class DelayControl : EffectUIControl<AudioEchoFilter> {
 
 public class ChorusControl : EffectUIControl<AudioChorusFilter> {
     public ChorusControl(AudioManager manager) : base(manager) { }
-    public override string ControlName => "Chorus";
+    public override string ControlGroup => "Chorus";
     protected override void AddEvents() {
         Slider("Mix", (0, 1), value => {
             Effect.wetMix1 = value;
