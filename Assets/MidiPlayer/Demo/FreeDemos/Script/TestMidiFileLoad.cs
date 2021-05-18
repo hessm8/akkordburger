@@ -116,8 +116,8 @@ namespace MidiToolkit
                 if (GUILayout.Button(new GUIContent("Read Events", ""), GUILayout.Height(40)))
                 {
                     infoEvents = new List<string>();
-                    List<AudioEvent> events = MidiLoader.MPTK_ReadMidiEvents(StartTicks, EndTicks);
-                    foreach (AudioEvent evt in events)
+                    List<MidiEvent> events = MidiLoader.MPTK_ReadMidiEvents(StartTicks, EndTicks);
+                    foreach (MidiEvent evt in events)
                     {
                         infoEvents.Add(evt.ToString());
                         if (evt.Command == MidiCommand.MetaEvent && evt.Meta == MPTKMeta.TimeSignature)

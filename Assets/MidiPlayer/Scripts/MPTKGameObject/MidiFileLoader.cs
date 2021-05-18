@@ -287,7 +287,7 @@ namespace MidiToolkit
         /// <param name="fromTicks">ticks start</param>
         /// <param name="toTicks">ticks end</param>
         /// <returns></returns>
-        public List<AudioEvent> MPTK_ReadMidiEvents(long fromTicks = 0, long toTicks = long.MaxValue)
+        public List<MidiEvent> MPTK_ReadMidiEvents(long fromTicks = 0, long toTicks = long.MaxValue)
         {
             if (miditoload == null)
             {
@@ -369,13 +369,13 @@ namespace MidiToolkit
         /// </summary>
         /// <param name="note"></param>
         /// <returns>MPTKEvent.EnumLength</returns>
-        public AudioEvent.EnumLength MPTK_NoteLength(AudioEvent note)
+        public MidiEvent.EnumLength MPTK_NoteLength(MidiEvent note)
         {
             if (miditoload != null)
                 return miditoload.NoteLength(note);
             else
                 NoMidiLoaded("MPTK_NoteLength");
-            return AudioEvent.EnumLength.Sixteenth;
+            return MidiEvent.EnumLength.Sixteenth;
         }
     }
 }

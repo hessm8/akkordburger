@@ -45,7 +45,7 @@ namespace MidiToolkit
         /// Play one midi event with a thread so the call return immediately.
         ///! @snippet MusicView.cs Example PlayNote
         /// </summary>
-        public void PlayAudioEvent(AudioEvent evnt)
+        public void PlayAudioEvent(MidiEvent evnt)
         {
             try
             {
@@ -75,7 +75,7 @@ namespace MidiToolkit
         /// Play a list of midi events with a thread so the call return immediately.
         /// @snippet TestMidiStream.cs Example MPTK_PlayEvent
         /// </summary>
-        public void MPTK_PlayEvent(List<AudioEvent> events)
+        public void MPTK_PlayEvent(List<MidiEvent> events)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace MidiToolkit
                     {
                         lock (this) // V2.83
                         {
-                            foreach (AudioEvent evnt in events)
+                            foreach (MidiEvent evnt in events)
                                 QueueSynthCommand.Enqueue(new SynthCommand() { Command = SynthCommand.enCmd.StartEvent, MidiEvent = evnt });
                         }
                     }
@@ -101,7 +101,7 @@ namespace MidiToolkit
             }
         }
 
-        private IEnumerator<float> TheadPlay(AudioEvent evnt)
+        private IEnumerator<float> TheadPlay(MidiEvent evnt)
         {
             if (evnt != null)
             {
@@ -126,7 +126,7 @@ namespace MidiToolkit
             yield return 0;
         }
 
-        private IEnumerator<float> TheadPlay(List<AudioEvent> events)
+        private IEnumerator<float> TheadPlay(List<MidiEvent> events)
         {
             if (events != null && events.Count > 0)
             {
@@ -157,7 +157,7 @@ namespace MidiToolkit
         /// Stop playing the note. All waves associated to the note are stop by sending a noteoff.
         /// </summary>
         /// <param name="pnote"></param>
-        public void MPTK_StopEvent(AudioEvent pnote)
+        public void MPTK_StopEvent(MidiEvent pnote)
         {
             if (!MPTK_CorePlayer)
                 StopEvent(pnote);

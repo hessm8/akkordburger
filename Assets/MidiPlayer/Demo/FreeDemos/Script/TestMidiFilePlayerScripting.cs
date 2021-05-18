@@ -188,7 +188,7 @@ namespace MidiToolkit
         /// <summary>
         /// Event fired by MidiFilePlayer when a midi notes are available (set by Unity Editor in MidiFilePlayer Inspector)
         /// </summary>
-        public void MidiReadEvents(List<AudioEvent> events)
+        public void MidiReadEvents(List<MidiEvent> events)
         {
             if (StopPositionPct < 100f)
             {
@@ -201,7 +201,7 @@ namespace MidiToolkit
                         midiFilePlayer.MPTK_Next();
             }
 
-            foreach (AudioEvent midievent in events)
+            foreach (MidiEvent midievent in events)
             {
                 switch (midievent.Command)
                 {

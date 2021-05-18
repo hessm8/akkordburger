@@ -8,7 +8,7 @@ namespace MPTKDemoCatchMusic
 
     public class ControlView : MonoBehaviour
     {
-        public AudioEvent note;
+        public MidiEvent note;
         public MidiStreamPlayer midiStreamPlayer;
         public bool played = false;
         public Material MatPlayed;

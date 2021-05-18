@@ -15,7 +15,7 @@ namespace MidiToolkit
     {
         public int IndexTrack;
         public long AbsoluteQuantize;
-        public MidiEvent Event;
+        public MPTK.NAudio.Midi.MidiEvent Event;
     }
 
     //! @endcond

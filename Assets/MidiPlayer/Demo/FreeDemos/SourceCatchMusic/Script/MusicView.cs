@@ -70,13 +70,13 @@ namespace MPTKDemoCatchMusic
         /// Playing the events are delayed until they "fall out"
         /// </summary>
         /// <param name="notes"></param>
-        public void NotesToPlay(List<AudioEvent> notes)
+        public void NotesToPlay(List<MidiEvent> notes)
         {
             // Count gameobject for each z position in the plan. Useful to stack them.
             countZ = new int[Convert.ToInt32(maxZ - minZ) + 1];
 
             //Debug.Log(midiFilePlayer.MPTK_PlayTime.ToString() + " count:" + notes.Count);
-            foreach (AudioEvent mptkEvent in notes)
+            foreach (MidiEvent mptkEvent in notes)
             {
                 switch (mptkEvent.Command)
                 {
@@ -132,7 +132,7 @@ namespace MPTKDemoCatchMusic
             //! [Example PlayNote]
             midiStreamPlayer.PlayAudioEvent
             (
-                new AudioEvent()
+                new MidiEvent()
                 {
                     Channel = 9,
                     Duration = 999999,

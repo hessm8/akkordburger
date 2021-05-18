@@ -154,7 +154,7 @@ namespace MidiToolkit
     ///! midiStreamPlayer.MPTK_PlayEvent(NotePlaying);    
     ///! @endcode
     /// </summary>
-    public partial class AudioEvent : ICloneable
+    public partial class MidiEvent : ICloneable
     {
         public virtual object Clone()
         {
@@ -274,7 +274,7 @@ namespace MidiToolkit
             }
         }
 
-        public AudioEvent()
+        public MidiEvent()
         {
             Command = MidiCommand.NoteOn;
             // V2.82 set default value
@@ -300,7 +300,7 @@ namespace MidiToolkit
         /// Create a MPTK Midi event from a midi input message
         /// </summary>
         /// <param name="data"></param>
-        public AudioEvent(ulong data)
+        public MidiEvent(ulong data)
         {
             Source = (uint)(data & 0xffffffffUL);
             Command = (MidiCommand)((data >> 32) & 0xFF);

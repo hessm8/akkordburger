@@ -62,33 +62,25 @@ public class AudioManager : MonoBehaviour {
 
         AddMainControls();
 
-
-        //bpmUI.onValueChanged.AddListener(BPMChange);
-        //bpmUI.onEndEdit.AddListener(BPMEndEdit);
-
         instrumentUI.ClearOptions();
         instrumentUI.AddOptions(instruments.Select(i => i.Name).ToList());
 
         instrumentUI.onValueChanged.AddListener(ChangeDropdown);
     }
 
-    //public void OnMouseEnter() {
-    //    events.curr
-    //}
-
     public void Awake() {
         Akkordburger.AudioManager = this;
+        Player = GetComponent<MidiStreamPlayer>();
     }
 
-    public void Start() {        
+    public void Start() {           
         AddControls();
-        Player = GetComponent<MidiStreamPlayer>();
     }
 
     #region Note Events 
 
     public MidiStreamPlayer Player { get; private set; }
-    private AudioEvent NotePlaying;
+    private MidiEvent NotePlaying;
     private EventSystem events => EventSystem.current;
     private PointerEventData PointerData => new PointerEventData(events);
 
@@ -133,7 +125,7 @@ public class AudioManager : MonoBehaviour {
 
         var playState = state ? MidiCommand.NoteOn : MidiCommand.NoteOff;
 
-        NotePlaying = new AudioEvent() {
+        NotePlaying = new MidiEvent() {
             Command = playState,
             Value = Note(key.Index),
             Channel = currentInstrument.Channel, // from 0 to 15, 9 reserved for drum

@@ -51,7 +51,7 @@ namespace MidiToolkit
         long ticks;
 
         public MidiSynth synth;
-        public AudioEvent MptkEvent;
+        public MidiEvent MptkEvent;
         public int IndexActive;
         public long LatenceTick;
 
@@ -555,7 +555,7 @@ namespace MidiToolkit
         }
 
 
-        public void fluid_voice_start(AudioEvent note)
+        public void fluid_voice_start(MidiEvent note)
         {
             // The maximum volume of the loop is calculated and cached once for each sample with its nominal loop settings. 
             // This happens, when the sample is used for the first time.

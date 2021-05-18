@@ -29,5 +29,7 @@ public class Instrument {
     public int Channel { get; }
     public int Preset { get; }
 
-    public void Use() => player.ChangePreset(Channel, Preset);
+    public void Use() {
+        player.ChangePreset(Channel, Preset);
+    }
 }

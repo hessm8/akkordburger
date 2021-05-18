@@ -627,14 +627,14 @@ namespace MidiToolkit
         private List<fluid_voice> FreeVoices;              /** the synthesis processes */
         //public ConcurrentQueue<MPTKEvent> QueueEvents;
         protected Queue<SynthCommand> QueueSynthCommand;
-        protected Queue<List<AudioEvent>> QueueMidiEvents;
+        protected Queue<List<MidiEvent>> QueueMidiEvents;
 
         public class SynthCommand
         {
             public enum enCmd { StartEvent, StopEvent, ClearAllVoices, NoteOffAll }
             public enCmd Command;
             public int IdSession; // V2.84
-            public AudioEvent MidiEvent;
+            public MidiEvent MidiEvent;
         }
 
         /* fluid_settings_old_t settings_old;  the old synthesizer settings */
@@ -1058,7 +1058,7 @@ namespace MidiToolkit
 
             FreeVoices = new List<fluid_voice>();
             QueueSynthCommand = new Queue<SynthCommand>();
-            QueueMidiEvents = new Queue<List<AudioEvent>>();
+            QueueMidiEvents = new Queue<List<MidiEvent>>();
 
             fluid_conv.fluid_conversion_config();
 
@@ -2079,7 +2079,7 @@ namespace MidiToolkit
             return null;
         }
 
-        public void synth_noteon(AudioEvent note)
+        public void synth_noteon(MidiEvent note)
         {
             if (note.Tag != null && note.Tag.GetType() == typeof(long))
                 StatUILatencyLAST = (float)(DateTime.UtcNow.Ticks - (long)note.Tag) / (float)fluid_voice.Nano100ToMilli;
@@ -2554,14 +2554,14 @@ namespace MidiToolkit
         /// </summary>
         /// <param name="midievents">List of Midi events to play</param>
         /// <param name="playNoteOff"></param>
-        protected void PlayEvents(List<AudioEvent> midievents, bool playNoteOff = true)
+        protected void PlayEvents(List<MidiEvent> midievents, bool playNoteOff = true)
         {
             if (MidiPlayerGlobal.MPTK_SoundFontLoaded == false)
                 return;
 
             if (midievents != null)
             {
-                foreach (AudioEvent note in midievents)
+                foreach (MidiEvent note in midievents)
                 {
                     MPTK_PlayDirectEvent(note, playNoteOff);
                 }
@@ -2577,7 +2577,7 @@ namespace MidiToolkit
         /// @snippet MusicView.cs Example PlayNote
         /// </summary>
         /// <param name="midievent"></param>
-        protected void StopEvent(AudioEvent midievent)
+        protected void StopEvent(MidiEvent midievent)
         {
             try
             {
@@ -2603,7 +2603,7 @@ namespace MidiToolkit
         /// @snippet MusicView.cs Example MPTK_PlayEvent
         /// </summary>
         /// <param name="midievent"></param>
-        public void MPTK_PlayDirectEvent(AudioEvent midievent, bool playNoteOff = true)
+        public void MPTK_PlayDirectEvent(MidiEvent midievent, bool playNoteOff = true)
         {
             //Debug.Log($">>> PlayEvent IdSynth:'{this.IdSynth}'");
 
@@ -3069,7 +3069,7 @@ namespace MidiToolkit
             //EllapseMidi = watchMidi.ElapsedTicks / ((float)System.Diagnostics.Stopwatch.Frequency / 1000f);
             EllapseMidi = watchMidi.ElapsedMilliseconds;
             // Read midi events until this time
-            List<AudioEvent> midievents = miditoplay.fluid_player_callback((int)EllapseMidi);
+            List<MidiEvent> midievents = miditoplay.fluid_player_callback((int)EllapseMidi);
 
 #if DEBUG_PERF_MIDI
             StatReadMidiMS = (float)watchPerfMidi.ElapsedTicks / ((float)System.Diagnostics.Stopwatch.Frequency / 1000f);
@@ -3080,7 +3080,7 @@ namespace MidiToolkit
             // Play notes read from the midi file
             if (midievents != null && midievents.Count > 0)
             {
-                foreach (AudioEvent midiEvent in midievents)
+                foreach (MidiEvent midiEvent in midievents)
                     midiEvent.IdSession = IdSession;
 
                 lock (this) // V2.83
@@ -3096,7 +3096,7 @@ namespace MidiToolkit
 
                 if (MPTK_DirectSendToPlayer)
                 {
-                    foreach (AudioEvent midievent in midievents)
+                    foreach (MidiEvent midievent in midievents)
                     {
                         try
                         {

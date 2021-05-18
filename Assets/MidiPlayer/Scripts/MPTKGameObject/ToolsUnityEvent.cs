@@ -8,12 +8,12 @@ namespace MidiToolkit
 {
 
     [System.Serializable]
-    public class EventMidiClass : UnityEvent<AudioEvent>
+    public class EventMidiClass : UnityEvent<MidiEvent>
     {
     }
 
     [System.Serializable]
-    public class EventNotesMidiClass : UnityEvent<List<AudioEvent>>
+    public class EventNotesMidiClass : UnityEvent<List<MidiEvent>>
     {
     }
 

@@ -84,7 +84,7 @@ namespace MidiToolkit
         /// <summary>
         /// Current note playing
         /// </summary>
-        private AudioEvent NotePlaying;
+        private MidiEvent NotePlaying;
 
         private float LastTimeChange;
 
@@ -215,7 +215,7 @@ namespace MidiToolkit
             {
                 case "BANK_INST":
                     MidiPlayerGlobal.MPTK_SelectBankInstrument(index);
-                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.BankSelect, Value = index, Channel = StreamChannel, });
+                    midiStreamPlayer.PlayAudioEvent(new MidiEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.BankSelect, Value = index, Channel = StreamChannel, });
                     break;
 
                 case "PATCH_INST":
@@ -223,12 +223,12 @@ namespace MidiToolkit
                     if (testLocalchange)
                         midiStreamPlayer.ChangePreset(StreamChannel, index);
                     else
-                        midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.PatchChange, Value = index, Channel = StreamChannel, });
+                        midiStreamPlayer.PlayAudioEvent(new MidiEvent() { Command = MidiCommand.PatchChange, Value = index, Channel = StreamChannel, });
                     break;
 
                 case "BANK_DRUM":
                     MidiPlayerGlobal.MPTK_SelectBankDrum(index);
-                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.BankSelect, Value = index, Channel = 9, });
+                    midiStreamPlayer.PlayAudioEvent(new MidiEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.BankSelect, Value = index, Channel = 9, });
                     break;
 
                 case "PATCH_DRUM":
@@ -236,7 +236,7 @@ namespace MidiToolkit
                     if (testLocalchange)
                         midiStreamPlayer.ChangePreset(9, index);
                     else
-                        midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.PatchChange, Value = index, Channel = 9 });
+                        midiStreamPlayer.PlayAudioEvent(new MidiEvent() { Command = MidiCommand.PatchChange, Value = index, Channel = 9 });
                     break;
             }
         }
@@ -395,7 +395,7 @@ namespace MidiToolkit
                 if (preset != CurrentPreset)
                 {
                     CurrentPreset = preset;
-                    midiStreamPlayer.PlayAudioEvent(new AudioEvent()
+                    midiStreamPlayer.PlayAudioEvent(new MidiEvent()
                     {
                         Command = MidiCommand.PatchChange,
                         Value = CurrentPreset,
@@ -513,7 +513,7 @@ namespace MidiToolkit
                 {
                     LastTimePitchChange = Time.realtimeSinceStartup;
                     PitchChange = pitchChange;
-                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.PitchWheelChange, Value = (int)PitchChange << 7, Channel = StreamChannel });
+                    midiStreamPlayer.PlayAudioEvent(new MidiEvent() { Command = MidiCommand.PitchWheelChange, Value = (int)PitchChange << 7, Channel = StreamChannel });
                 }
                 midiStreamPlayer.MPTK_Transpose = (int)Slider("Transpose", midiStreamPlayer.MPTK_Transpose, -24, 24, true);
 
@@ -530,7 +530,7 @@ namespace MidiToolkit
                 if (panChange != PanChange)
                 {
                     PanChange = panChange;
-                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.Pan, Value = PanChange, Channel = StreamChannel });
+                    midiStreamPlayer.PlayAudioEvent(new MidiEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.Pan, Value = PanChange, Channel = StreamChannel });
                 }
                 GUILayout.EndHorizontal();
 
@@ -543,7 +543,7 @@ namespace MidiToolkit
                 if (modChange != ModChange)
                 {
                     ModChange = modChange;
-                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.Modulation, Value = ModChange, Channel = StreamChannel });
+                    midiStreamPlayer.PlayAudioEvent(new MidiEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.Modulation, Value = ModChange, Channel = StreamChannel });
                 }
 
                 // Change modulation. Often applied volume, this effect is defined in the SoundFont 
@@ -551,7 +551,7 @@ namespace MidiToolkit
                 if (expChange != ExpChange)
                 {
                     ExpChange = expChange;
-                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.Expression, Value = ExpChange, Channel = StreamChannel });
+                    midiStreamPlayer.PlayAudioEvent(new MidiEvent() { Command = MidiCommand.ControlChange, Controller = MPTKController.Expression, Value = ExpChange, Channel = StreamChannel });
                 }
                 GUILayout.EndHorizontal();
                 GUILayout.EndVertical(); // end ControlChange modification
@@ -788,7 +788,7 @@ namespace MidiToolkit
                         PitchChange = DEFAULT_PITCH;
                     //PitchChange = Mathf.Lerp(PitchChange, DEFAULT_PITCH, Time.deltaTime*10f);
                     //Debug.Log("DEFAULT_PITCH " + DEFAULT_PITCH + " " + PitchChange + " " + currentVelocityPitch);
-                    midiStreamPlayer.PlayAudioEvent(new AudioEvent() { Command = MidiCommand.PitchWheelChange, Value = (int)PitchChange << 7, Channel = StreamChannel });
+                    midiStreamPlayer.PlayAudioEvent(new MidiEvent() { Command = MidiCommand.PitchWheelChange, Value = (int)PitchChange << 7, Channel = StreamChannel });
                 }
             }
 
@@ -808,7 +808,7 @@ namespace MidiToolkit
                             if (++CurrentPreset > EndPreset) CurrentPreset = StartPreset;
                             if (CurrentPreset < StartPreset) CurrentPreset = StartPreset;
 
-                            midiStreamPlayer.PlayAudioEvent(new AudioEvent()
+                            midiStreamPlayer.PlayAudioEvent(new MidiEvent()
                             {
                                 Command = MidiCommand.PatchChange,
                                 Value = CurrentPreset,
@@ -966,7 +966,7 @@ namespace MidiToolkit
         {
             //Debug.Log($"{StreamChannel} {midiStreamPlayer.MPTK_ChannelPresetGetName(StreamChannel)}");
             // Start playing a new note
-            NotePlaying = new AudioEvent()
+            NotePlaying = new MidiEvent()
             {
                 Command = MidiCommand.NoteOn,
                 Value = CurrentNote,

@@ -15,7 +15,7 @@ namespace MPTKDemoCatchMusic
     public class NoteView : MonoBehaviour
     {
         public static bool FirstNotePlayed = false;
-        public AudioEvent note;
+        public MidiEvent note;
         public MidiStreamPlayer midiStreamPlayer;
         public bool played = false;
         public Material MatPlayed;

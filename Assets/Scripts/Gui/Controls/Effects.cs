@@ -5,34 +5,35 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class ReverbControl : EffectControl<AudioReverbFilter> {
+public class ReverbControl : EffectUIControl<AudioReverbFilter> {
     public ReverbControl(AudioManager manager) : base(manager) { }
-    public override string EffectName => "Reverb";
-    public override void AddEvents() {        
+    public override string ControlName => "Reverb";
+    protected override void AddEvents() {        
+        
         Slider("Mix", (-2500, -500), value => Effect.reverbLevel = value);
         Slider("Decay", (0, 10), value => Effect.decayTime = value);
     }
 }
 
-public class DelayControl : EffectControl<AudioEchoFilter> {
+public class DelayControl : EffectUIControl<AudioEchoFilter> {
     public DelayControl(AudioManager manager) : base(manager) { }
-    public override string EffectName => "Delay";
-    public override void AddEvents() {
+    public override string ControlName => "Delay";
+    protected override void AddEvents() {
         Slider("Mix", (0, 1), value => {
             Effect.wetMix = value;
-            wet = value;
+            wetValue = value;
         });
         Slider("Rate", (100, 3000), value => Effect.delay = value);
         Slider("Decay", (0, 1), DecaySlider);
     }
 
-    private float wet;
-    public override void OnToggle(bool isOn) {
+    private float wetValue;
+    protected override void OnToggle(bool isOn) {
         base.OnToggle(isOn);
 
-        var decay = sliders["Decay"];
-        if (isOn) {           
-            Manager.StartCoroutine(AdjustWet());            
+        var decay = Sliders["Decay"];
+        if (isOn) {
+            Manager.StartCoroutine(AdjustWet());
             decay.onValueChanged.AddListener(DecaySlider);
             decay.value = 0.5f;
         } else {
@@ -44,14 +45,14 @@ public class DelayControl : EffectControl<AudioEchoFilter> {
     private void DecaySlider(float value) => Effect.decayRatio = value;
     private IEnumerator AdjustWet() {
         yield return new WaitForSeconds(0.8f);
-        Effect.wetMix = wet;
+        Effect.wetMix = wetValue;
     }
 }
 
-public class ChorusControl : EffectControl<AudioChorusFilter> {
+public class ChorusControl : EffectUIControl<AudioChorusFilter> {
     public ChorusControl(AudioManager manager) : base(manager) { }
-    public override string EffectName => "Chorus";
-    public override void AddEvents() {
+    public override string ControlName => "Chorus";
+    protected override void AddEvents() {
         Slider("Mix", (0, 1), value => {
             Effect.wetMix1 = value;
             Effect.wetMix2 = value;
