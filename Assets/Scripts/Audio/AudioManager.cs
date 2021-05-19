@@ -17,7 +17,7 @@ public class AudioManager : MonoBehaviour {
     [Range(100, 200)]
     public int BPM = 120;
     [Range(2, 8)]
-    public int Octave = 4;
+    public int Octave = 5;
 
     public bool allowPlay = true;    
     public Instrument currentInstrument = new Instrument();
@@ -70,7 +70,9 @@ public class AudioManager : MonoBehaviour {
 
     private List<PianoKey> SustainedNotes = new List<PianoKey>();
 
-    public void ChangeOctave(int direction) {      
+    public void ChangeOctave(int direction, bool fromGUI = false) {
+        int newOctave = Octave + direction;
+        if (!newOctave.In(1, 9)) return;
 
         while (SustainedNotes.Count > 0) {
             var note = SustainedNotes[0];
@@ -79,9 +81,9 @@ public class AudioManager : MonoBehaviour {
             var button = note.GetComponent<Button>();
             button.OnPointerUp(PointerData);
         }
-        settings.Sliders["Octave"].value += direction;
 
-        Octave += direction;
+        if (settings != null && !fromGUI) settings.Sliders["Octave"].value = newOctave;
+        Octave = newOctave;
     }
 
 
