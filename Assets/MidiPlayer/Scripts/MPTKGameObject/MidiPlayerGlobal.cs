@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine.Events;
 using System;
-using System.Collections.ObjectModel;
 using MEC;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     /// <summary>
     /// Singleton class to manage all global features of MPTK.
     /// More information here: https://paxstellar.fr/midiplayerglobal/

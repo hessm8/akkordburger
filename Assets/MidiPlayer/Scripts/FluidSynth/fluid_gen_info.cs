@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     public class fluid_gen_info
     {
         /// <summary>

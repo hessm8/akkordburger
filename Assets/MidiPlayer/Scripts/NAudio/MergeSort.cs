@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace MPTK.NAudio.Midi
-{
+namespace MPTK.NAudio.Midi {
     class MergeSort
     {
         /// <summary>

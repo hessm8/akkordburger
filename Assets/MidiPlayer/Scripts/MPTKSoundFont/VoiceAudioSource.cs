@@ -1,16 +1,11 @@
 ﻿//#define DEBUGPERF
 //#define DEBUGTIME
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
 using UnityEngine;
 using MEC;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     public class VoiceAudioSource : MonoBehaviour
     {
         public MidiSynth synth;

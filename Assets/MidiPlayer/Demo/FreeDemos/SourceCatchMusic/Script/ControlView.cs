@@ -1,10 +1,7 @@
 ﻿using MidiToolkit;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace MPTKDemoCatchMusic
-{
+namespace MPTKDemoCatchMusic {
 
     public class ControlView : MonoBehaviour
     {

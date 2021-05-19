@@ -2,12 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MidiToolkit;
 using System;
-using UnityEngine.Events;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     public class TestMidiFilePlayerScripting : MonoBehaviour
     {
         /// <summary>

@@ -1,14 +1,9 @@
-﻿using MidiToolkit;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 using UnityEngine;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     /// <summary>
     /// Contains the setting of MidiFilePlayer TK
     /// </summary>

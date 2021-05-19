@@ -1,12 +1,9 @@
 ﻿//#define MPTK_PRO
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using MidiToolkit;
 using System;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     public class GUISelectSoundFont : MonoBehaviour
     {
         static public List<MPTKListItem> SoundFonts = null;

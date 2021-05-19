@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 //using MPTK.NAudio.Utils;
 
-namespace MPTK.NAudio.Midi
-{
+namespace MPTK.NAudio.Midi {
     /// <summary>
     /// A helper class to manage collection of MIDI events
     /// It has the ability to organise them in tracks

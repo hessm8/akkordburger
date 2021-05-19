@@ -1,14 +1,11 @@
 ﻿using MidiToolkit;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// Demo CatchMusic
 /// </summary>
-namespace MPTKDemoCatchMusic
-{
-    
+namespace MPTKDemoCatchMusic {
+
     /// <summary>
     /// Defined behavior of a note
     /// </summary>

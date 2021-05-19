@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Xml.Serialization;
-using UnityEngine;
-
-namespace MidiToolkit
-{
+﻿namespace MidiToolkit {
     /** Sample types */
     public enum EnumSampleType
     {

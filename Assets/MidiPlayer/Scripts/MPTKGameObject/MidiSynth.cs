@@ -11,21 +11,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
 using UnityEngine;
-using UnityEngine.Events;
 using MEC;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 #if MPTK_PRO && UNITY_ANDROID && UNITY_OBOE
 using Oboe.Stream;
 #endif
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     public enum fluid_loop
     {
         FLUID_UNLOOPED = 0,

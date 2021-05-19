@@ -2,16 +2,10 @@
 //#define DEBUGPERF
 //#define DEBUGTIME
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
 using UnityEngine;
-using MEC;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
 
     /* for fluid_voice_add_mod */
     public enum fluid_voice_addorover_mod

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     public class PopupListItem
     {
         public bool Show = false;

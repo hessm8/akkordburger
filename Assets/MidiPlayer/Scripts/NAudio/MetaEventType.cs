@@ -1,7 +1,4 @@
-using System;
-
-namespace MPTK.NAudio.Midi
-{
+namespace MPTK.NAudio.Midi {
     /// <summary>
     /// MIDI MetaEvent Type
     /// </summary>

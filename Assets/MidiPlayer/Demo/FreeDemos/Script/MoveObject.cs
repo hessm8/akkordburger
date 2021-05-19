@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     public class MoveObject : MonoBehaviour
     {
         public enum MoveAxe { X, Y, Z };

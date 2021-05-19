@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace MPTKDemoCatchMusic
-{
+namespace MPTKDemoCatchMusic {
     public class Collide : MonoBehaviour
     {
 

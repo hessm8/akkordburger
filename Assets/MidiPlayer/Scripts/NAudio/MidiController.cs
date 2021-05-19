@@ -1,7 +1,4 @@
-using System;
-
-namespace MPTK.NAudio.Midi
-{
+namespace MPTK.NAudio.Midi {
     /// <summary>
     /// MidiController enumeration
     /// http://www.midi.org/techspecs/midimessages.php#3

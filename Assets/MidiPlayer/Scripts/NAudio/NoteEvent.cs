@@ -1,9 +1,7 @@
 using System;
 using System.IO;
-using System.Text;
 
-namespace MPTK.NAudio.Midi
-{
+namespace MPTK.NAudio.Midi {
     /// <summary>
     /// Represents a note MIDI event
     /// </summary>

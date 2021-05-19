@@ -1,15 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Linq;
 using MPTK.NAudio.Midi;
 using System;
-using System.IO;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     /// <summary>
     /// Scan a midifile and return information
     /// </summary>

@@ -1,16 +1,12 @@
 ﻿#define DEBUG_LOGEVENT 
 using UnityEngine;
-using System.Collections;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using MPTK.NAudio.Midi;
 using System;
 using System.IO;
 using System.Linq;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     /// <summary>
     /// Class for loading a Midi file. 
     /// No sequencer, no synthetizer, so music playing capabilities. 

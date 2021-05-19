@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
 using UnityEngine;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
 
     // specific channel properties
     public class mptk_channel // V2.82 new

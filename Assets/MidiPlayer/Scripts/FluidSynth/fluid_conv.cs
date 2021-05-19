@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
 using UnityEngine;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
 
     public class fluid_conv
     {

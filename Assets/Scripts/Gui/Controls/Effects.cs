@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class ReverbControl : EffectUIControl<AudioReverbFilter> {
     public ReverbControl(AudioManager manager) : base(manager) { }

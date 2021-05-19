@@ -1,16 +1,9 @@
-﻿using MidiToolkit;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Xml.Serialization;
 using UnityEngine;
-using UnityEngine.Events;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     /// <summary>
     /// SoundFont adapted to Unity
     /// </summary>

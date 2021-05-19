@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
 
 using MidiToolkit;
-using System;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 

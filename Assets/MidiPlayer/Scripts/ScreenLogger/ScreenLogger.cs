@@ -1,12 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System;
 using UnityEngine.SceneManagement;
 
-namespace AClockworkBerry
-{
+namespace AClockworkBerry {
 
-	public class ScreenLogger : MonoBehaviour
+    public class ScreenLogger : MonoBehaviour
 	{
 		public static bool IsPersistent = true;
 

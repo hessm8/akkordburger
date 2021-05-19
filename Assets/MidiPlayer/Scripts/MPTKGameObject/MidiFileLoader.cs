@@ -1,14 +1,9 @@
 ﻿
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using System;
-using UnityEngine.Events;
-using MEC;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     /// <summary>
     /// Script associated to the prefab MidiFileLoader. 
     /// No sequencer, no synthetizer, no music playing capabilities. 

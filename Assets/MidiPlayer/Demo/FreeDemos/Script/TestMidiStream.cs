@@ -1,13 +1,9 @@
 ﻿//#define MPTK_PRO
 //#define DEBUG_MULTI
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using MidiToolkit;
 using System;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     public class TestMidiStream : MonoBehaviour
     {
 

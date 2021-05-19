@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-using UnityEngine;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     /// <summary>
     /// MIDI command codes. Defined the action to be done with the message: note on/off, change instrument, ...
     /// Depending of the command selected, others properties must be set; Value, Channel, ....

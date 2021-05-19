@@ -1,14 +1,4 @@
-﻿using MidiToolkit;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-using UnityEngine;
-
-namespace MidiToolkit
-{
+﻿namespace MidiToolkit {
     /// <summary>
     /// Define parameter and information for the SF to avoid loading all a SF 
     /// </summary>

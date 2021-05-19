@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Xml.Serialization;
-using UnityEngine;
-
-namespace MidiToolkit
-{
+﻿namespace MidiToolkit {
     /// <summary>
     /// Cover fluid_inst_zone_t and fluid_preset_zone_t
     /// </summary>

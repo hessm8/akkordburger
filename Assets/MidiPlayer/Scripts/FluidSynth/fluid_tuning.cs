@@ -1,12 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Xml.Serialization;
-
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     public class fluid_tuning
     {
         public string name;

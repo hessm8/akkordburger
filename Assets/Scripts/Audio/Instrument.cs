@@ -1,19 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using System.Collections;
-
-
-using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
+﻿using System.Collections.Generic;
 
 using MidiToolkit;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 public class Instrument {
 

@@ -1,10 +1,7 @@
 using System;
-using System.IO;
-using System.Text;
 using System.Collections.Generic;
 
-namespace MPTK.NAudio.Midi
-{
+namespace MPTK.NAudio.Midi {
     /// <summary>
     /// Utility class for comparing MidiEvent objects
     /// </summary>

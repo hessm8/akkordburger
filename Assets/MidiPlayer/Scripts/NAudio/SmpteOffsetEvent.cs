@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
 
-namespace MPTK.NAudio.Midi
-{
+namespace MPTK.NAudio.Midi {
     class SmpteOffsetEvent : MetaEvent
     {
         private byte hours;

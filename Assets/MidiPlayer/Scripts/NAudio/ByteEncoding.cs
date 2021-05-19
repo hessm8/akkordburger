@@ -1,8 +1,6 @@
-using System;
 using System.Text;
 
-namespace MPTK.NAudio.Utils
-{
+namespace MPTK.NAudio.Utils {
     /// <summary>
     /// An encoding for use with file types that have one byte per character
     /// </summary>

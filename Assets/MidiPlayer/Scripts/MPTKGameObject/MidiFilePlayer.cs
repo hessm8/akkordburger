@@ -1,14 +1,10 @@
 ﻿#define DEBUG_START_MIDIx
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using System;
-using UnityEngine.Events;
 using MEC;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     /// <summary>
     /// Script associated to the prefab MidiFilePlayer. 
     /// Simply, play a Midi file. Midi files must be defined from the Unity menu MPTK in the Unity editor.

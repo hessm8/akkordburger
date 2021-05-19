@@ -1,16 +1,7 @@
-﻿using MidiToolkit;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Xml.Serialization;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
 
     /* Flags telling the polarity of a modulator.  Compare with SF2.01
        section 8.2. Note: The numbers of the bits are different!  (for

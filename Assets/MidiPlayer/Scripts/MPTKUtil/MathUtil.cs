@@ -1,11 +1,6 @@
-﻿using UnityEngine;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     public class MovingAverage
     {
         private Queue<int> samples;

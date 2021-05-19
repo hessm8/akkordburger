@@ -1,13 +1,10 @@
-﻿using MidiToolkit;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace MidiToolkit
-{
+namespace MidiToolkit {
     public class SceneHandler : MonoBehaviour
     {
         // Manage skin

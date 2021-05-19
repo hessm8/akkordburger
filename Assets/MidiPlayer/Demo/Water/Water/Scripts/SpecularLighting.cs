@@ -1,8 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace UnityStandardAssets.Water
-{
+namespace UnityStandardAssets.Water {
     [RequireComponent(typeof(WaterBase))]
     [ExecuteInEditMode]
     public class SpecularLighting : MonoBehaviour
