@@ -6,12 +6,10 @@ using UnityEngine;
 
 public class FieldBPM : InputField {
 
-    private AudioManager audioManager = Akkordburger.AudioManager;
+    internal AudioManager audioManager = Akkordburger.AudioManager;
 
     protected override void Start() {
         base.Start();
-        audioManager = Akkordburger.AudioManager;
-        text = audioManager.BPM.ToString();
 
         onEndEdit.AddListener(OnLeave);
     }

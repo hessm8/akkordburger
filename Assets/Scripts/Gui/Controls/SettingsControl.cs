@@ -11,11 +11,14 @@ public class SettingsControl : UIControl {
     public override string ControlGroup => "Settings";
 
     private Dropdown instrument;
+    private FieldBPM bpm;
 
     protected override void Locate(GameObject child) {
 
         if (child.HasComponent<Dropdown>(out var dropdown)) {
             instrument = dropdown;
+        } else if (child.HasComponent<FieldBPM>(out var field)) {
+            bpm = field;
         }
 
     }
@@ -24,7 +27,10 @@ public class SettingsControl : UIControl {
     }
     protected override void Initialize() {
         instrument.ClearOptions();
-        instrument.AddOptions(Instrument.Presets.Select(i => i.Name).ToList());        
+        instrument.AddOptions(Instrument.Presets.Select(i => i.Name).ToList());
+
+        bpm.audioManager = Manager;
+        bpm.text = Manager.BPM.ToString();
     }
     protected override void AddEvents() {
         instrument.onValueChanged.AddListener(ChangeDropdown);
