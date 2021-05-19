@@ -26,5 +26,7 @@ public class FieldBPM : InputField {
         } else audioManager.BPM = number;
 
         audioManager.allowPlay = true;
+
+        audioManager.delay.ChangeDelayTime();
     }
 }

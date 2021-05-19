@@ -27,8 +27,21 @@ public class DelayControl : EffectUIControl<AudioEchoFilter> {
             Effect.wetMix = value;
             wetValue = value;
         });
-        Slider("Rate", (100, 3000), value => Effect.delay = value);
+        Slider("Rate", (100, 3000), _ => ChangeDelayTime());
         Slider("Decay", (0, 1), DecaySlider);
+
+        Toggles["Sync"].onValueChanged.AddListener(_ => ChangeDelayTime());
+    }
+
+    public void ChangeDelayTime() {
+        float sliderValue = Sliders["Rate"].value;
+
+        if (Toggles["Sync"].isOn) {
+            float k = (sliderValue - 100) / 580 - 2;
+            Effect.delay = Manager.BeatInMilliseconds * (float)Math.Pow(2, (int)k);
+        } else {
+            Effect.delay = sliderValue;
+        }
     }
 
     private float wetValue;

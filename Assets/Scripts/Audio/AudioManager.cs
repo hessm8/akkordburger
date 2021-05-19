@@ -13,7 +13,7 @@ using UnityEngine.EventSystems;
 
 public class AudioManager : MonoBehaviour {   
 
-    private double BeatInMilliseconds => 60000 / BPM * 0.001;
+    public float BeatInMilliseconds => 60000 / BPM;
     [Range(100, 200)]
     public int BPM = 120;
     [Range(2, 8)]
@@ -22,11 +22,13 @@ public class AudioManager : MonoBehaviour {
     public bool allowPlay = true;    
     public Instrument currentInstrument = new Instrument();
     private SettingsControl settings;
+    public DelayControl delay;
+    private ReverbControl reverb;
+    private ChorusControl chorus;
     private void AddControls() {
-        new ReverbControl(this);
-        new DelayControl(this);
-        new ChorusControl(this);
-
+        reverb = new ReverbControl(this);
+        delay = new DelayControl(this);
+        chorus = new ChorusControl(this);
         settings = new SettingsControl(this);
     }
 
