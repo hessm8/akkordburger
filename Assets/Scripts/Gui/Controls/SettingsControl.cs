@@ -22,7 +22,6 @@ public class SettingsControl : UIControl {
         Manager.currentInstrument = Instrument.Presets[index];
     }
     protected override void Initialize() {
-        instrument.ClearOptions();
         instrument.AddOptions(Instrument.Presets.Select(i => i.Name).ToList());
 
         bpm.audioManager = Manager;

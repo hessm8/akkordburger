@@ -7,7 +7,9 @@ using MidiToolkit;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class AudioManager : MonoBehaviour {   
+public class AudioManager : MonoBehaviour {
+
+    public GuiManager guiManager;
 
     public float BeatInMilliseconds => 60000 / BPM;
     [Range(100, 200)]
@@ -29,7 +31,7 @@ public class AudioManager : MonoBehaviour {
     }
 
     public void Awake() {
-        Akkordburger.AudioManager = this;
+        General.AudioManager = this;
         Player = GetComponent<MidiStreamPlayer>();
     }
 
@@ -66,7 +68,7 @@ public class AudioManager : MonoBehaviour {
     }
     #endregion
 
-    private List<PianoKey> SustainedNotes = new List<PianoKey>();
+    public readonly List<PianoKey> SustainedNotes = new List<PianoKey>();
 
     public void ChangeOctave(int direction, bool fromGUI = false) {
         int newOctave = Octave + direction;

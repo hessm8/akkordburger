@@ -4,53 +4,71 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class GuiManager : MonoBehaviour {
-    public Button key;
-    public KeyboardActions midiSuite;
+    public Button keyPrefab;
+    public KeyboardActions actions;
 
-    Vector2 keySize = new Vector2(30, 150);
-    int quantity = 12;
-    int octaves = 3;
-    float keyOffset => (keySize.x * quantity * octaves) / (2 * 1.7f);
+    readonly Vector2 keySize = new Vector2(30, 150);
+    const int noteCount = 12;
+    const int whiteCount = 7;
+    public int OctaveCount { get; set; } = 3;
+    float KeyOffset => (keySize.x * whiteCount * OctaveCount) / 2;
 
-    List<int> blackers = new List<int> { 1, 3, 6, 8, 10 };
+    readonly HashSet<int> BlackKeys = new HashSet<int> { 1, 3, 6, 8, 10 };
+    readonly List<Button> AllKeys = new List<Button>();
+    public void CreateKeyboardUI() {
+        DrawOctaves(OctaveCount);
+    }
+    public void RedoKeyboardUI(int addOctave) {
+        var changed = OctaveCount + addOctave;
+        if (!changed.In(1, 6)) return;
 
-    private int keyIndexInOctave(int keyIndex) => keyIndex % quantity;
-    void CreateKeyboardUI() {
-        DrawOctaves(3);
+        foreach (var k in AllKeys) {
+            Destroy(k.gameObject);
+        }
+
+        OctaveCount = changed;
+
+        AllKeys.Clear();
+        drawBlack.Clear();
+        General.AudioManager.SustainedNotes.Clear();
+
+        CreateKeyboardUI();
     }
 
-    List<UnityAction> drawLater;
+    List<UnityAction> drawBlack = new List<UnityAction>();
     private void DrawOctaves(int octaves) {
         int addOffsetCount = 0;
-        for (int keyIndex = 0; keyIndex < quantity * octaves; keyIndex++) {
+
+        for (int keyIndex = 0; keyIndex < noteCount * octaves; keyIndex++) {
             DrawKeyAt(keyIndex, ref addOffsetCount);
         }
-        foreach (var drawKey in drawLater) drawKey();
+
+        foreach (var drawKey in drawBlack) drawKey();
     }
     void DrawKeyAt(int k, ref int addOffsetCount) {
-        bool isBlack = blackers.Contains(keyIndexInOctave(k));
+        var inOctave = k % noteCount;
+        bool isBlack = BlackKeys.Contains(inOctave);
 
         float addOffset = keySize.x / 2;
-        if (keyIndexInOctave(k) == 5 || keyIndexInOctave(k) == 0) {
+        if (inOctave == 5 || inOctave == 0) {
             addOffsetCount++;
         }
 
-        Button keyObject;
-        var keyPos = new Vector3(k * keySize.x / 2 - keyOffset + addOffset * addOffsetCount, 0);
+        var keyPos = new Vector3(k * keySize.x / 2 - KeyOffset + addOffset * addOffsetCount, 0);
 
         UnityAction drawKey = () => {
-            keyObject = Instantiate(key, keyPos, Quaternion.identity);
+            var keyObject = Instantiate(keyPrefab, keyPos, Quaternion.identity);
             keyObject.name = $"PianoKey_{k - 12}";
 
             SetSpecific(ref keyObject, isBlack);
 
             keyObject.transform.SetParent(transform, false);
             keyObject.GetComponent<PianoKey>().Index = k;
-        };
 
-        //drawKey();
+            AllKeys.Add(keyObject);
+        };       
 
-        if (isBlack) drawLater.Add(drawKey);
+        if (isBlack) drawBlack.Add(drawKey);
         else drawKey();
     }
     void SetSpecific(ref Button keyObject, bool isBlack) {
@@ -65,83 +83,18 @@ public class GuiManager : MonoBehaviour {
             keyMainColor = Color.black;
         }
 
-        var keyPressedColor = new Color(0.196f, 0.75f, 0.58f);
         var colors = new ColorBlock() {
-            pressedColor = Color.Lerp(keyMainColor, keyPressedColor, 0.45f),
+            pressedColor = Color.Lerp(keyMainColor, General.KeyColor, 0.45f),
             normalColor = keyMainColor,
             highlightedColor = keyMainColor,
             selectedColor = keyMainColor,
             colorMultiplier = 1,
-            fadeDuration = 0.06f,
-            
+            fadeDuration = 0.06f,            
         };
         keyObject.colors = colors;
     }
 
-    void CreateKeyboardUIOld() {
-        int addOffsetCount = 0;
-
-        var toDo = new List<UnityAction>();
-
-        for (int keyIndex = 0; keyIndex < quantity * octaves; keyIndex++) {
-            bool isBlack = blackers.Contains(keyIndexInOctave(keyIndex));
-
-            float addOffset = keySize.x / 2;
-            if (keyIndexInOctave(keyIndex) == 5 || keyIndexInOctave(keyIndex) == 0) {
-                addOffsetCount++;
-            }
-
-            Button keyObject;
-            var keyPos = new Vector3(keyIndex * keySize.x / 2 - keyOffset + addOffset * addOffsetCount, 0);
-
-            UnityAction drawKey = () => {
-                keyObject = Instantiate(key, keyPos, Quaternion.identity);
-
-                //if (isBlack) SetBlack(ref keyObject);
-
-                keyObject.transform.SetParent(transform, false);
-                keyObject.GetComponent<PianoKey>().Index = keyIndex;
-            };
-
-            if (isBlack) toDo.Add(drawKey);
-            else drawKey();
-        }
-
-        toDo.ForEach(a => a.Invoke());
-    }
-    void CreateKeyboardUIFirst() {
-        for (int keyIndex = 0; keyIndex < quantity * octaves; keyIndex++) {
-            var keyPos = new Vector3(keyIndex * keySize.x - keyOffset, 0);
-            var keyObject = Instantiate(key, keyPos, Quaternion.identity);
-
-            keyObject.transform.SetParent(transform, false);
-            keyObject.GetComponent<PianoKey>().Index = keyIndex;
-        }
-
-        for (int keyIndex = 0; keyIndex < quantity * octaves; keyIndex++) {
-            var noteThing = keyIndex % 7;
-            if (noteThing == 2 || noteThing == 6) continue;
-
-            var keyPos = new Vector3(keyIndex * keySize.x - keyOffset + keySize.x / 2, 0);
-            var keyObject = Instantiate(key, keyPos, Quaternion.identity);
-
-            var rt = keyObject.GetComponent<RectTransform>();
-            rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 90);
-            rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 25);
-
-            rt.position += new Vector3(0, 30);
-
-            var col = keyObject.colors;
-            col.normalColor = Color.black;
-            keyObject.colors = col;
-
-            keyObject.transform.SetParent(transform, false);
-            keyObject.GetComponent<PianoKey>().Index = keyIndex;
-        }
-    }
-
     void Start() {
-        drawLater = new List<UnityAction>();
         CreateKeyboardUI();
     }
 }

@@ -21,7 +21,8 @@ public static class Utils {
     }
 }
 
-public static class Akkordburger {
+public static class General {
     internal static AudioManager AudioManager;
+    internal static Color KeyColor => new Color(0.196f, 0.75f, 0.58f);
 }
 

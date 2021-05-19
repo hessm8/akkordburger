@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class FieldBPM : InputField {
 
-    internal AudioManager audioManager = Akkordburger.AudioManager;
+    internal AudioManager audioManager = General.AudioManager;
 
     protected override void Start() {
         base.Start();

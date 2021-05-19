@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 using System;
 
 public class KeyboardActions : MonoBehaviour {
+
+    public GuiManager guiManager;
+
     private AudioManager audioManager;    
 
     private InputActionAsset actionAsset;
@@ -15,6 +18,11 @@ public class KeyboardActions : MonoBehaviour {
     private Dictionary<string, Dictionary< string, Action<InputAction.CallbackContext> >> storedActions;
 
     #region Unity
+    //public void RegenerateActions() {
+    //    storedActions.Clear();
+    //    SetupActionAssets();
+    //    CreateActions();
+    //}
     void Awake() {
         storedActions = new Dictionary<string, Dictionary<string, Action<InputAction.CallbackContext>>>();
         SetupActionAssets();
@@ -56,14 +64,22 @@ public class KeyboardActions : MonoBehaviour {
         foreach (var key in keys) {
             StoreAction(ref keyPlay,
                 "onNote_" + key.Key,
-                ctx => audioManager.OnNote(ctx, key.Value, key.Key),
+                ctx => {
+                    if (guiManager.OctaveCount >= 3 || key.Value < 12) {
+                        audioManager.OnNote(ctx, key.Value, key.Key);
+                    }
+                },
                 "<Keyboard>/" + key.Key,
                 "press(behavior=0)"
             );
 
             StoreAction(ref keyPlay,
                 "offNote_" + key.Key,
-                ctx => audioManager.OffNote(ctx, key.Value, key.Key),
+                ctx => {
+                    if (guiManager.OctaveCount >= 3 || key.Value < 12) {
+                        audioManager.OffNote(ctx, key.Value, key.Key);
+                    }
+                },
                 "<Keyboard>/" + key.Key,
                 "press(behavior=1)"
             );
